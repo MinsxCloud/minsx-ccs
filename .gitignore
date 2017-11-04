@@ -20,3 +20,16 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+.settings/
+*.classpath
+*.project
+*.iml
+minsx-ccs-aliyun-oss/target/
+minsx-ccs-baidu-bos/dependents/documentation/
+minsx-ccs-baidu-bos/target/
+minsx-ccs-common/target/
+minsx-ccs-core/minsx-ccs-core-entity/target/
+minsx-ccs-core/minsx-ccs-core-service/target/
+minsx-ccs-custom-local/target/
+minsx-ccs-qiniu-kodo/target/
+minsx-ccs-tencent-cos/target/

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.minsx</groupId>
+	<artifactId>minsx-ccs</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<name>minsx-ccs</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!--fastjson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.38</version>
+		</dependency>
+		<!--commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<modules>
+		<module>minsx-ccs-common</module>
+		<module>minsx-ccs-core</module>
+		<module>minsx-ccs-tencent-cos</module>
+		<module>minsx-ccs-aliyun-oss</module>
+		<module>minsx-ccs-baidu-bos</module>
+		<module>minsx-ccs-qiniu-kodo</module>
+		<module>minsx-ccs-custom-local</module>
+	</modules>
+</project>
