@@ -1,24 +1,42 @@
 package org.minsx.ccs.core.entity;
 
-public interface Credentials {
-	/**
-	 * Returns the access key ID for this credentials.
-	 */
-	public String getAccessKeyId();
+public abstract class Credentials {
 
-	/**
-	 * Returns the secret access key for this credentials.
-	 */
-	public String getSecretAccessKey();
+	private long appId;
+	private String accessKeyId;
+	private String secretAccessKey;
+	private String securityToken;
 
-	/**
-	 * set the secret access key for this credentials.
-	 */
-	public void setAccessKeyId();
+	public long getAppId() {
+		return appId;
+	}
 
-	/**
-	 * set the secret access key for this credentials.
-	 */
-	public String setSecretAccessKey();
+	public void setAppId(long appId) {
+		this.appId = appId;
+	}
+
+	public String getAccessKeyId() {
+		return accessKeyId;
+	}
+
+	public void setAccessKeyId(String accessKeyId) {
+		this.accessKeyId = accessKeyId;
+	}
+
+	public String getSecretAccessKey() {
+		return secretAccessKey;
+	}
+
+	public void setSecretAccessKey(String secretAccessKey) {
+		this.secretAccessKey = secretAccessKey;
+	}
+
+	public String getSecurityToken() {
+		return securityToken;
+	}
+
+	public void setSecurityToken(String securityToken) throws Exception{
+		this.securityToken = securityToken;
+	}
 
 }
