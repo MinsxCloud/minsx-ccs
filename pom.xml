@@ -16,6 +16,7 @@
 	</properties>
 
 	<dependencies>
+
 		<!--fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -45,4 +46,19 @@
 		<module>minsx-ccs-qiniu-kodo</module>
 		<module>minsx-ccs-custom-local</module>
 	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
 </project>

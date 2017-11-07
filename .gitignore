@@ -33,3 +33,4 @@ minsx-ccs-core/minsx-ccs-core-service/target/
 minsx-ccs-custom-local/target/
 minsx-ccs-qiniu-kodo/target/
 minsx-ccs-tencent-cos/target/
+minsx-ccs-core/target/
