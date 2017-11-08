@@ -2,16 +2,16 @@ package com.minsx.ccs.core.config;
 
 public class TencentCOSConfig {
 
-	private Long appId;
+	private String appId;
 	private String secretId;
 	private String secretKey;
 	private String region;
 
-	public Long getAppId() {
+	public String getAppId() {
 		return appId;
 	}
 
-	public void setAppId(Long appId) {
+	public void setAppId(String appId) {
 		this.appId = appId;
 	}
 

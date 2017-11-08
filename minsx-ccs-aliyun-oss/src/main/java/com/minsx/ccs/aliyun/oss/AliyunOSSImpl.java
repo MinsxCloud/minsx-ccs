@@ -4,12 +4,11 @@ import java.io.File;
 
 import com.aliyun.oss.OSSClient;
 import com.minsx.ccs.core.config.AliyunOSSConfig;
+import com.minsx.ccs.core.exception.NativeClientTypeException;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
 import com.minsx.ccs.core.service.CCSClient;
-
-import minsx.ccs.core.exception.NativeClientTypeException;
 
 public class AliyunOSSImpl implements CCSClient {
 

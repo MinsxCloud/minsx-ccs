@@ -6,12 +6,11 @@ import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
 import com.minsx.ccs.core.config.BaiduBOSConfig;
+import com.minsx.ccs.core.exception.NativeClientTypeException;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
 import com.minsx.ccs.core.service.CCSClient;
-
-import minsx.ccs.core.exception.NativeClientTypeException;
 
 public class BaiduBOSImpl implements CCSClient{
 	

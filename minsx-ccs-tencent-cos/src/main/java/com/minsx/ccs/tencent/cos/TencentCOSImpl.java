@@ -1,6 +1,9 @@
 package com.minsx.ccs.tencent.cos;
 
+import java.io.File;
+
 import com.minsx.ccs.core.config.TencentCOSConfig;
+import com.minsx.ccs.core.exception.NativeClientTypeException;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
@@ -8,9 +11,9 @@ import com.minsx.ccs.core.service.CCSClient;
 import com.qcloud.cos.COS;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
-import com.qcloud.cos.sign.Credentials;
-
-import minsx.ccs.core.exception.NativeClientTypeException;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.region.Region;
 
 public class TencentCOSImpl implements CCSClient{
 	
@@ -19,71 +22,60 @@ public class TencentCOSImpl implements CCSClient{
 	
 	public TencentCOSImpl(TencentCOSConfig tencentCOSConfig) {
 		this.tencentCOSConfig = tencentCOSConfig;
-        Credentials credentials = new Credentials(tencentCOSConfig.getAppId(), tencentCOSConfig.getSecretId(), tencentCOSConfig.getSecretKey());
-        ClientConfig clientConfig = new ClientConfig();
-        clientConfig.setRegion(tencentCOSConfig.getRegion());
-        cosClient = new COSClient(clientConfig, credentials);
+		COSCredentials cred = new BasicCOSCredentials(tencentCOSConfig.getAppId(), tencentCOSConfig.getSecretId(), tencentCOSConfig.getSecretKey());
+		ClientConfig clientConfig = new ClientConfig(new Region(tencentCOSConfig.getRegion()));
+		cosClient = new COSClient(cred, clientConfig);
 	}
 
 	@Override
 	public void createBucket(String bucketName) {
-		// TODO Auto-generated method stub
-		
+		cosClient.createBucket(bucketName);
 	}
 
 	@Override
 	public void deleteBucket(String bucketName) {
-		// TODO Auto-generated method stub
-		
+		cosClient.deleteBucket(bucketName);
 	}
 
 	@Override
 	public Boolean doesBucketExist(String bucketName) {
-		// TODO Auto-generated method stub
-		return null;
+		return cosClient.doesBucketExist(bucketName);
 	}
 
 	@Override
 	public Boolean doesObjectExist(String bucketName, String ccsObjectPath) {
-		// TODO Auto-generated method stub
-		return null;
+		return cosClient.doesObjectExist(bucketName, ccsObjectPath);
 	}
 
 	@Override
 	public CCSObjectList getObjectList(String bucketName, String ccsFolderPath) {
-		// TODO Auto-generated method stub
-		return null;
+		return COSParseUtil.parseToCCSObjectList(cosClient.listObjects(bucketName, ccsFolderPath));
 	}
 
 	@Override
 	public CCSObject getObject(String bucketName, String ccsObjectPath) {
-		// TODO Auto-generated method stub
-		return null;
+		return COSParseUtil.parseToCCSObject(cosClient.getObject(bucketName, ccsObjectPath));
 	}
 
 	@Override
 	public CCSObjectMetadata getObjectMetadata(String bucketName, String ccsObjectPath) {
-		// TODO Auto-generated method stub
-		return null;
+		return COSParseUtil.parseToCCSObjectMetadata(cosClient.getObjectMetadata(bucketName, ccsObjectPath));
 	}
 
 	@Override
 	public void copyObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,
 			String destinationObjectPath) {
-		// TODO Auto-generated method stub
-		
+		cosClient.copyObject(sourceBucketName, sourceObjectPath, destinationBucketName, destinationObjectPath);
 	}
 
 	@Override
 	public void putObject(String sourceFilePath, String bucketName, String ccsObjectPath) {
-		// TODO Auto-generated method stub
-		
+		cosClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
 	}
 
 	@Override
 	public void deleteObject(String bucketName, String ccsObjectPath) {
-		// TODO Auto-generated method stub
-		
+		cosClient.deleteObject(bucketName, ccsObjectPath);
 	}
 
 	@Override

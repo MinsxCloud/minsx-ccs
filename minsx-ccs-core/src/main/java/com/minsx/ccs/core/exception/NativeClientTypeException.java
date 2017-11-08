@@ -1,4 +1,4 @@
-package minsx.ccs.core.exception;
+package com.minsx.ccs.core.exception;
 
 public class NativeClientTypeException extends Exception {
 

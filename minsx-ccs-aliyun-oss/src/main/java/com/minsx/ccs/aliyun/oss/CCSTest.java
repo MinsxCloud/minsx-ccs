@@ -1,9 +1,8 @@
 package com.minsx.ccs.aliyun.oss;
 
 import com.minsx.ccs.core.config.AliyunOSSConfig;
+import com.minsx.ccs.core.exception.NativeClientTypeException;
 import com.minsx.ccs.core.service.CCSClient;
-
-import minsx.ccs.core.exception.NativeClientTypeException;
 
 public class CCSTest {
 	

@@ -1,6 +1,7 @@
 package com.minsx.ccs.aliyun.oss;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.UploadFileRequest;
 
 public class OSSTest {
@@ -12,6 +13,9 @@ public class OSSTest {
 		client.getObject(null).getObjectMetadata();
 		client.listObjects("").getObjectSummaries().get(0).getOwner();
 		client.shutdown();
+		
+		new OSSException("");
+		
 	}
 	
 	
