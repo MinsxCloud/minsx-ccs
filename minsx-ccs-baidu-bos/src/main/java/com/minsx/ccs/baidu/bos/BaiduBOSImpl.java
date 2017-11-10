@@ -6,21 +6,22 @@ import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
 import com.minsx.ccs.core.config.BaiduBOSConfig;
-import com.minsx.ccs.core.exception.NativeClientTypeException;
+import com.minsx.ccs.core.exception.NativeClientCastException;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
 import com.minsx.ccs.core.service.CCSClient;
 
-public class BaiduBOSImpl implements CCSClient{
-	
+public class BaiduBOSImpl implements CCSClient {
+
 	private BaiduBOSConfig baiduBOSConfig;
 	private BosClient bosClient;
-	
+
 	public BaiduBOSImpl(BaiduBOSConfig baiduBOSConfig) {
-		this.baiduBOSConfig=baiduBOSConfig;
+		this.baiduBOSConfig = baiduBOSConfig;
 		BosClientConfiguration config = new BosClientConfiguration();
-		config.setCredentials(new DefaultBceCredentials(baiduBOSConfig.getAccessKeyId(),baiduBOSConfig.getAccessKeySecret()));
+		config.setCredentials(
+				new DefaultBceCredentials(baiduBOSConfig.getAccessKeyId(), baiduBOSConfig.getAccessKeySecret()));
 		config.setEndpoint(baiduBOSConfig.getEndPoint());
 		bosClient = new BosClient(config);
 	}
@@ -86,14 +87,14 @@ public class BaiduBOSImpl implements CCSClient{
 	public void shutdown() {
 		bosClient.shutdown();
 	}
-
+ 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getNativeClient(Class<T> nativeClientClass) throws NativeClientTypeException {
+	public <T> T getNativeClient(Class<T> nativeClientClass) {
 		if (!nativeClientClass.isInstance(BosClient.class)) {
-			throw new NativeClientTypeException(bosClient.getClass(), nativeClientClass);
+			throw new NativeClientCastException(bosClient.getClass(), nativeClientClass);
 		}
-		return (T)bosClient;
+		return (T) bosClient;
 	}
 
 	public BaiduBOSConfig getBaiduBOSConfig() {

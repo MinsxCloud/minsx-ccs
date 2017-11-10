@@ -1,6 +1,5 @@
 package com.minsx.ccs.core.service;
 
-import com.minsx.ccs.core.exception.NativeClientTypeException;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
@@ -33,6 +32,6 @@ public interface CCSClient {
 
 	public void shutdown();
 	
-	public <T> T getNativeClient(Class<T> nativeClientClazz) throws NativeClientTypeException;
+	public <T> T getNativeClient(Class<T> nativeClientClazz);
 
 }

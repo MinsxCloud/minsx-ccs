@@ -3,7 +3,7 @@ package com.minsx.ccs.tencent.cos;
 import java.io.File;
 
 import com.minsx.ccs.core.config.TencentCOSConfig;
-import com.minsx.ccs.core.exception.NativeClientTypeException;
+import com.minsx.ccs.core.exception.NativeClientCastException;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
@@ -85,9 +85,9 @@ public class TencentCOSImpl implements CCSClient{
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getNativeClient(Class<T> nativeClientClass) throws NativeClientTypeException {
+	public <T> T getNativeClient(Class<T> nativeClientClass) throws NativeClientCastException {
 		if (!nativeClientClass.isInstance(COS.class)) {
-			throw new NativeClientTypeException(cosClient.getClass(), nativeClientClass);
+			throw new NativeClientCastException(cosClient.getClass(), nativeClientClass);
 		}
 		return (T)cosClient;
 	}

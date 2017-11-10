@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.aliyun.oss.OSSClient;
 import com.minsx.ccs.core.config.AliyunOSSConfig;
-import com.minsx.ccs.core.exception.NativeClientTypeException;
+import com.minsx.ccs.core.exception.NativeClientCastException;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
@@ -87,9 +87,9 @@ public class AliyunOSSImpl implements CCSClient {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getNativeClient(Class<T> nativeClientClass) throws NativeClientTypeException {
+	public <T> T getNativeClient(Class<T> nativeClientClass) throws NativeClientCastException {
 		if (!nativeClientClass.isInstance(OSSClient.class)) {
-			throw new NativeClientTypeException(ossClient.getClass(), nativeClientClass);
+			throw new NativeClientCastException(ossClient.getClass(), nativeClientClass);
 		}
 		return (T)ossClient;
 	}
