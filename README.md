@@ -1,37 +1,22 @@
-## Welcome to GitHub Pages
+# Minsx-ccs
+#### 主要用于统一阿里云、百度云、腾讯云、七牛云等云存储及本地存储，提供一套简单通用的标准
 
-You can use the [editor on GitHub](https://github.com/goodsave/minsx-ccs/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/goodsave/minsx-ccs/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### 项目说明
++ 软件名称：Minsx-ccs (全称：minsx-common-cloud-storge 即公共云存储)
++ 版本号：1.0.0
++ 开发者：www.minsx.com
++ 语言：Java
++ 功能：统一各云平台对象存储的调用,只需要简单的配置即可完成各云平台对象存储的调用管理,其中包括：
+	+ 阿里云 OSS
+	+ 百度云 BOS
+	+ 腾讯云 COS
+	+ 七牛 KODO
+  + 本地存储(操作系统文件形式的存储,非对象存储)
++ 优点：开箱即用/配置简单/通用/可扩展/学习成本较低
++ 缺点：部分功能被阉割(注：您仍可以获取原生客户端进行更细致d的操作)
++ 开源协议：Apache License Version 2.0 http://www.apache.org/licenses/
+				
+### 适用场景
++ 数据托管在以上各云平台对象存储的企业
++ 需要具备扩展性业务需求(将来会使用以上云平台对象存储)
++ 本地存储和第三方云存储混合开发的企业
