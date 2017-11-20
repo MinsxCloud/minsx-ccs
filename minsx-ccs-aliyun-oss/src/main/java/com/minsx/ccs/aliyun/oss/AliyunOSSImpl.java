@@ -1,10 +1,19 @@
 package com.minsx.ccs.aliyun.oss;
 
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.ListObjectsRequest;
+import com.aliyun.oss.model.ObjectListing;
+import com.minsx.ccs.core.able.ListObjectsRequestable;
+import com.minsx.ccs.core.able.ObjectRequestable;
+import com.minsx.ccs.core.able.PageRequestable;
+import com.minsx.ccs.core.able.PutObjectRequestable;
 import com.minsx.ccs.core.config.AliyunOSSConfig;
 import com.minsx.ccs.core.exception.NativeClientCastException;
+import com.minsx.ccs.core.model.CCSBucket;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
@@ -42,7 +51,7 @@ public class AliyunOSSImpl implements CCSClient {
 	}
 
 	@Override
-	public CCSObjectList getObjectList(String bucketName, String ccsFolderPath) {
+	public CCSObjectList listObjects(String bucketName, String ccsFolderPath) {
 		return AliyunOSSParseUtil.parseToCCSObjectList(ossClient.listObjects(bucketName, ccsFolderPath));
 	}
 
@@ -94,6 +103,44 @@ public class AliyunOSSImpl implements CCSClient {
 		return (T)ossClient;
 	}
 
+	@Override
+	public CCSObjectList listObjects(PageRequestable pageable) {
+		String nextMarker = null;
+		CCSObjectList ccsObjectListing=null;
+		ObjectListing objectListing = null;
+		Integer pageIndex=0;
+		do {
+		    objectListing = ossClient.listObjects(new ListObjectsRequest(pageable.getBucketName()).withPrefix(pageable.getPrefix()).withMarker(nextMarker).withMaxKeys(pageable.getPageSize()));
+		    ccsObjectListing= AliyunOSSParseUtil.parseToCCSObjectList(objectListing);
+		    if (pageIndex==pageable.getPageIndex()) {
+				break;
+			}
+		    nextMarker = objectListing.getNextMarker();
+		    pageIndex++;
+		} while (objectListing.isTruncated());
+		return ccsObjectListing;
+	}
+
+	@Override
+	public CCSObjectList listObjects(ListObjectsRequestable listObjectsRequestable) {
+		ObjectListing objectListing = ossClient.listObjects(AliyunOSSParseUtil.parseToListObjectsRequest(listObjectsRequestable));
+		return AliyunOSSParseUtil.parseToCCSObjectList(objectListing);
+	}
+
+	@Override
+	public CCSObject getObject(ObjectRequestable objectRequestable) {
+		return this.getObject(objectRequestable.getBucketName(), objectRequestable.getCcsPath());
+	}
+
+	@Override
+	public List<CCSBucket> listCCSBuckets() {
+		List<CCSBucket> ccsBuckets =ossClient.listBuckets().stream().map(ossBucket->AliyunOSSParseUtil.parseToCCSBucket(ossBucket)).collect(Collectors.toList());
+		return ccsBuckets;
+	}
+
+	@Override
+	public void putObject(PutObjectRequestable putObjectRequestable) {
+	}
 	
 
 }

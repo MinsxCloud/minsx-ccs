@@ -1,5 +1,12 @@
 package com.minsx.ccs.core.service;
 
+import java.util.List;
+
+import com.minsx.ccs.core.able.ListObjectsRequestable;
+import com.minsx.ccs.core.able.ObjectRequestable;
+import com.minsx.ccs.core.able.PageRequestable;
+import com.minsx.ccs.core.able.PutObjectRequestable;
+import com.minsx.ccs.core.model.CCSBucket;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
@@ -15,11 +22,19 @@ public interface CCSClient {
 
 	public Boolean doesBucketExist(String bucketName);
 
+	public List<CCSBucket> listCCSBuckets();
+	
+	public CCSObjectList listObjects(String bucketName, String ccsFolderPath);
+	
+	public CCSObjectList listObjects(ListObjectsRequestable listObjectsRequestable);
+	
+	public CCSObjectList listObjects(PageRequestable pageable);
+
 	public Boolean doesObjectExist(String bucketName, String ccsObjectPath);
-
-	public CCSObjectList getObjectList(String bucketName, String ccsFolderPath);
-
+	
 	public CCSObject getObject(String bucketName, String ccsObjectPath);
+	
+	public CCSObject getObject(ObjectRequestable objectRequestable);
 
 	public CCSObjectMetadata getObjectMetadata(String bucketName, String ccsObjectPath);
 
@@ -27,11 +42,13 @@ public interface CCSClient {
 			String destinationObjectPath);
 
 	public void putObject(String sourceFilePath, String bucketName, String ccsObjectPath);
+	
+	public void putObject(PutObjectRequestable putObjectRequestable);
 
 	public void deleteObject(String bucketName, String ccsObjectPath);
 
 	public void shutdown();
-	
+
 	public <T> T getNativeClient(Class<T> nativeClientClazz);
 
 }

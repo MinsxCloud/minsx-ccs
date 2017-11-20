@@ -13,6 +13,7 @@ import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
 import com.minsx.ccs.core.model.CCSObjectSummary;
 import com.minsx.ccs.core.model.CCSOwner;
+import com.minsx.ccs.core.type.UnknownType;
 
 public class BaiduBOSParseUtil {
 	
@@ -55,7 +56,11 @@ public class BaiduBOSParseUtil {
 		CCSObjectList ccsObjectList = new CCSObjectList();
 		ccsObjectList.setBucketName(bosListObjectsResponse.getBucketName());
 		ccsObjectList.setMarker(bosListObjectsResponse.getMarker());
+		ccsObjectList.setNextMarker(bosListObjectsResponse.getNextMarker());
+		ccsObjectList.setDelimiter(bosListObjectsResponse.getDelimiter());
+		ccsObjectList.setEncodingType(UnknownType.UNKNOWN_ENCODING_TYPE);
 		ccsObjectList.setMaxKeys(bosListObjectsResponse.getMaxKeys());
+		ccsObjectList.setTruncated(bosListObjectsResponse.isTruncated());
 		ccsObjectList.setPrefix(bosListObjectsResponse.getPrefix());
 		ccsObjectList.setCommonPrefix(bosListObjectsResponse.getCommonPrefixes());
 		List<CCSObjectSummary> ccsObjectSummaries = new ArrayList<>();

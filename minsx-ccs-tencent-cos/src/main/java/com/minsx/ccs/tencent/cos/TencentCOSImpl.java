@@ -1,9 +1,15 @@
 package com.minsx.ccs.tencent.cos;
 
 import java.io.File;
+import java.util.List;
 
+import com.minsx.ccs.core.able.ListObjectsRequestable;
+import com.minsx.ccs.core.able.ObjectRequestable;
+import com.minsx.ccs.core.able.PageRequestable;
+import com.minsx.ccs.core.able.PutObjectRequestable;
 import com.minsx.ccs.core.config.TencentCOSConfig;
 import com.minsx.ccs.core.exception.NativeClientCastException;
+import com.minsx.ccs.core.model.CCSBucket;
 import com.minsx.ccs.core.model.CCSObject;
 import com.minsx.ccs.core.model.CCSObjectList;
 import com.minsx.ccs.core.model.CCSObjectMetadata;
@@ -48,7 +54,7 @@ public class TencentCOSImpl implements CCSClient{
 	}
 
 	@Override
-	public CCSObjectList getObjectList(String bucketName, String ccsFolderPath) {
+	public CCSObjectList listObjects(String bucketName, String ccsFolderPath) {
 		return COSParseUtil.parseToCCSObjectList(cosClient.listObjects(bucketName, ccsFolderPath));
 	}
 
@@ -98,5 +104,30 @@ public class TencentCOSImpl implements CCSClient{
 
 	public void setTencentCOSConfig(TencentCOSConfig tencentCOSConfig) {
 		this.tencentCOSConfig = tencentCOSConfig;
+	}
+
+	@Override
+	public CCSObjectList listObjects(PageRequestable pageable) {
+		return null;
+	}
+
+	@Override
+	public CCSObjectList listObjects(ListObjectsRequestable listObjectsRequestable) {
+		return null;
+	}
+
+	@Override
+	public CCSObject getObject(ObjectRequestable objectRequestable) {
+		return null;
+	}
+
+	@Override
+	public List<CCSBucket> listCCSBuckets() {
+		return null;
+	}
+
+	@Override
+	public void putObject(PutObjectRequestable putObjectRequestable) {
+		
 	}
 }

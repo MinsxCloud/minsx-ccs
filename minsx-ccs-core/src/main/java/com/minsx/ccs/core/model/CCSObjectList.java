@@ -10,11 +10,19 @@ public class CCSObjectList {
 	
 	private String bucketName;
 	
-    private Integer maxKeys;
-    
-    private String marker;
-	
 	private String prefix;
+	
+	private String marker;
+	
+	private String nextMarker;
+    
+    private boolean isTruncated;
+    
+    private int maxKeys;
+    
+    private String delimiter;
+    
+    private String encodingType;
 	
 	private List<String> commonPrefix;
 	
@@ -28,22 +36,6 @@ public class CCSObjectList {
 
 	public void setBucketName(String bucketName) {
 		this.bucketName = bucketName;
-	}
-
-	public Integer getMaxKeys() {
-		return maxKeys;
-	}
-
-	public void setMaxKeys(Integer maxKeys) {
-		this.maxKeys = maxKeys;
-	}
-
-	public String getMarker() {
-		return marker;
-	}
-
-	public void setMarker(String marker) {
-		this.marker = marker;
 	}
 
 	public String getPrefix() {
@@ -76,6 +68,54 @@ public class CCSObjectList {
 
 	public void setCcsObjectSummaries(List<CCSObjectSummary> ccsObjectSummaries) {
 		this.ccsObjectSummaries = ccsObjectSummaries;
+	}
+
+	public String getMarker() {
+		return marker;
+	}
+
+	public void setMarker(String marker) {
+		this.marker = marker;
+	}
+
+	public String getNextMarker() {
+		return nextMarker;
+	}
+
+	public void setNextMarker(String nextMarker) {
+		this.nextMarker = nextMarker;
+	}
+
+	public boolean isTruncated() {
+		return isTruncated;
+	}
+
+	public void setTruncated(boolean isTruncated) {
+		this.isTruncated = isTruncated;
+	}
+
+	public int getMaxKeys() {
+		return maxKeys;
+	}
+
+	public void setMaxKeys(int maxKeys) {
+		this.maxKeys = maxKeys;
+	}
+
+	public String getDelimiter() {
+		return delimiter;
+	}
+
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+	}
+
+	public String getEncodingType() {
+		return encodingType;
+	}
+
+	public void setEncodingType(String encodingType) {
+		this.encodingType = encodingType;
 	}
 	
 }

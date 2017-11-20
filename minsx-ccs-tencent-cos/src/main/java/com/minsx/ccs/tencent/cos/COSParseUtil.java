@@ -56,7 +56,11 @@ public class COSParseUtil {
 		CCSObjectList ccsObjectList = new CCSObjectList();
 		ccsObjectList.setBucketName(cosObjectListing.getBucketName());
 		ccsObjectList.setMarker(cosObjectListing.getMarker());
+		ccsObjectList.setNextMarker(cosObjectListing.getNextMarker());
+		ccsObjectList.setDelimiter(cosObjectListing.getDelimiter());
+		ccsObjectList.setEncodingType(cosObjectListing.getEncodingType());
 		ccsObjectList.setMaxKeys(cosObjectListing.getMaxKeys());
+		ccsObjectList.setTruncated(cosObjectListing.isTruncated());
 		ccsObjectList.setPrefix(cosObjectListing.getPrefix());
 		ccsObjectList.setCommonPrefix(cosObjectListing.getCommonPrefixes());
 		List<CCSObjectSummary> ccsObjectSummaries = new ArrayList<>();
