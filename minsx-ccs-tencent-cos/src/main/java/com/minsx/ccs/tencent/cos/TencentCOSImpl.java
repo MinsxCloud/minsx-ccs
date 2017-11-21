@@ -14,6 +14,7 @@ import com.minsx.ccs.core.model.base.CCSBucket;
 import com.minsx.ccs.core.model.base.CCSObject;
 import com.minsx.ccs.core.model.base.CCSObjectList;
 import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 import com.minsx.ccs.core.service.CCSClient;
 import com.qcloud.cos.COS;
 import com.qcloud.cos.COSClient;
@@ -22,14 +23,15 @@ import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.region.Region;
 
-public class TencentCOSImpl implements CCSClient{
-	
+public class TencentCOSImpl implements CCSClient {
+
 	private COSClient cosClient;
 	private TencentCOSConfig tencentCOSConfig;
-	
+
 	public TencentCOSImpl(TencentCOSConfig tencentCOSConfig) {
 		this.tencentCOSConfig = tencentCOSConfig;
-		COSCredentials cred = new BasicCOSCredentials(tencentCOSConfig.getAppId(), tencentCOSConfig.getSecretId(), tencentCOSConfig.getSecretKey());
+		COSCredentials cred = new BasicCOSCredentials(tencentCOSConfig.getAppId(), tencentCOSConfig.getSecretId(),
+				tencentCOSConfig.getSecretKey());
 		ClientConfig clientConfig = new ClientConfig(new Region(tencentCOSConfig.getRegion()));
 		cosClient = new COSClient(cred, clientConfig);
 	}
@@ -76,8 +78,9 @@ public class TencentCOSImpl implements CCSClient{
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath,String sourceFilePath) {
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, String sourceFilePath) {
 		cosClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
+		return null;
 	}
 
 	@Override
@@ -96,7 +99,7 @@ public class TencentCOSImpl implements CCSClient{
 		if (!nativeClientClass.isInstance(COS.class)) {
 			throw new NativeClientCastException(cosClient.getClass(), nativeClientClass);
 		}
-		return (T)cosClient;
+		return (T) cosClient;
 	}
 
 	public TencentCOSConfig getTencentCOSConfig() {
@@ -128,23 +131,32 @@ public class TencentCOSImpl implements CCSClient{
 	}
 
 	@Override
-	public void putObject(CCSPutObjectRequestable putObjectRequestable) {
-		
+	public CCSPutObjectResponse putObject(CCSPutObjectRequestable putObjectRequestable) {
+		return null;
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
 		cosClient.putObject(bucketName, ccsObjectPath, inputStream, null);
+		return null;
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, File sourceFile) {
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile) {
 		cosClient.putObject(bucketName, ccsObjectPath, sourceFile);
+		return null;
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, File sourceFile,
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile,
 			CCSObjectMetadata ccsObjectMetadata) {
-		
+		return null;
+	}
+
+	@Override
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream,
+			CCSObjectMetadata ccsObjectMetadata) {
+		return null;
+
 	}
 }

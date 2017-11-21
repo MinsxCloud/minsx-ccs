@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.ObjectListing;
+import com.aliyun.oss.model.PutObjectResult;
 import com.minsx.ccs.core.able.CCSListObjectsRequestable;
 import com.minsx.ccs.core.able.CCSGetObjectRequestable;
 import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
@@ -18,6 +19,7 @@ import com.minsx.ccs.core.model.base.CCSBucket;
 import com.minsx.ccs.core.model.base.CCSObject;
 import com.minsx.ccs.core.model.base.CCSObjectList;
 import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 import com.minsx.ccs.core.service.CCSClient;
 
 public class AliyunOSSImpl implements CCSClient {
@@ -73,8 +75,9 @@ public class AliyunOSSImpl implements CCSClient {
 	}
 
 	@Override
-	public void putObject( String bucketName, String ccsObjectPath,String sourceFilePath) {
-		ossClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
+	public CCSPutObjectResponse putObject( String bucketName, String ccsObjectPath,String sourceFilePath) {
+		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
+		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
@@ -140,24 +143,35 @@ public class AliyunOSSImpl implements CCSClient {
 	}
 
 	@Override
-	public void putObject(CCSPutObjectRequestable putObjectRequestable) {
-		ossClient.putObject(AliyunOSSParseUtil.parseToPutObjectRequest(putObjectRequestable));
+	public CCSPutObjectResponse putObject(CCSPutObjectRequestable putObjectRequestable) {
+		PutObjectResult result =	ossClient.putObject(AliyunOSSParseUtil.parseToPutObjectRequest(putObjectRequestable));
+		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
-		ossClient.putObject(bucketName, ccsObjectPath, inputStream);
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
+		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, inputStream);
+		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, File sourceFile) {
-		ossClient.putObject(bucketName, ccsObjectPath, sourceFile);
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile) {
+		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, sourceFile);
+		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, File sourceFile,
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile,
 			CCSObjectMetadata ccsObjectMetadata) {
-		ossClient.putObject(bucketName, ccsObjectPath, sourceFile, AliyunOSSParseUtil.parseToObjectMetadata(ccsObjectMetadata));
+		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, sourceFile, AliyunOSSParseUtil.parseToObjectMetadata(ccsObjectMetadata));
+		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
+	}
+
+	@Override
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream,
+			CCSObjectMetadata ccsObjectMetadata) {
+		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, inputStream, AliyunOSSParseUtil.parseToObjectMetadata(ccsObjectMetadata));
+		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 	
 

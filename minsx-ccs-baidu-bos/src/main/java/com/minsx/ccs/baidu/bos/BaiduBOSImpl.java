@@ -17,6 +17,7 @@ import com.minsx.ccs.core.model.base.CCSBucket;
 import com.minsx.ccs.core.model.base.CCSObject;
 import com.minsx.ccs.core.model.base.CCSObjectList;
 import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 import com.minsx.ccs.core.service.CCSClient;
 
 public class BaiduBOSImpl implements CCSClient {
@@ -81,8 +82,9 @@ public class BaiduBOSImpl implements CCSClient {
 	}
 
 	@Override
-	public void putObject( String bucketName, String ccsObjectPath,String sourceFilePath) {
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, String sourceFilePath) {
 		bosClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
+		return null;
 	}
 
 	@Override
@@ -94,7 +96,7 @@ public class BaiduBOSImpl implements CCSClient {
 	public void shutdown() {
 		bosClient.shutdown();
 	}
- 
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getNativeClient(Class<T> nativeClientClass) {
@@ -133,23 +135,32 @@ public class BaiduBOSImpl implements CCSClient {
 	}
 
 	@Override
-	public void putObject(CCSPutObjectRequestable putObjectRequestable) {
+	public CCSPutObjectResponse putObject(CCSPutObjectRequestable putObjectRequestable) {
+		return null;
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
 		bosClient.putObject(bucketName, ccsObjectPath, inputStream);
+		return null;
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, File sourceFile) {
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile) {
 		bosClient.putObject(bucketName, ccsObjectPath, sourceFile);
+		return null;
 	}
 
 	@Override
-	public void putObject(String bucketName, String ccsObjectPath, File sourceFile,
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile,
 			CCSObjectMetadata ccsObjectMetadata) {
-		
+		return null;
+	}
+
+	@Override
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream,
+			CCSObjectMetadata ccsObjectMetadata) {
+		return null;
 	}
 
 }

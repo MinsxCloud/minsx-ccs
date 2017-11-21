@@ -12,6 +12,7 @@ import com.minsx.ccs.core.model.base.CCSBucket;
 import com.minsx.ccs.core.model.base.CCSObject;
 import com.minsx.ccs.core.model.base.CCSObjectList;
 import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 
 /**
  * CCSClient created by web on 2017年11月4日
@@ -43,15 +44,17 @@ public interface CCSClient {
 	public void copyObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,
 			String destinationObjectPath);
 
-	public void putObject(String bucketName, String ccsObjectPath,String sourceFilePath);
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath,String sourceFilePath);
 	
-	public void putObject(String bucketName, String ccsObjectPath,File sourceFile);
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath,File sourceFile);
 	
-	public void putObject(String bucketName, String ccsObjectPath,File sourceFile,CCSObjectMetadata ccsObjectMetadata);
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath,File sourceFile,CCSObjectMetadata ccsObjectMetadata);
 	
-	public void putObject(String bucketName,String ccsObjectPath,InputStream inputStream);
+	public CCSPutObjectResponse putObject(String bucketName,String ccsObjectPath,InputStream inputStream);
 	
-	public void putObject(CCSPutObjectRequestable putObjectRequestable);
+	public CCSPutObjectResponse putObject(String bucketName,String ccsObjectPath,InputStream inputStream,CCSObjectMetadata ccsObjectMetadata);
+	
+	public CCSPutObjectResponse putObject(CCSPutObjectRequestable putObjectRequestable);
 
 	public void deleteObject(String bucketName, String ccsObjectPath);
 

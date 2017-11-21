@@ -3,7 +3,6 @@ package com.minsx.ccs.aliyun.oss;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.ListObjectsRequest;
-import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.UploadFileRequest;
 
 public class OSSTest {

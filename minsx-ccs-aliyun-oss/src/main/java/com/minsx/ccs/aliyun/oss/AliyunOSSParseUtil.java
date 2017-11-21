@@ -3,6 +3,7 @@ package com.minsx.ccs.aliyun.oss;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aliyun.oss.common.comm.ResponseMessage;
 import com.aliyun.oss.model.Bucket;
 import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.OSSObject;
@@ -11,6 +12,7 @@ import com.aliyun.oss.model.ObjectListing;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.Owner;
 import com.aliyun.oss.model.PutObjectRequest;
+import com.aliyun.oss.model.PutObjectResult;
 import com.minsx.ccs.core.able.CCSListObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPutObjectRequestable;
 import com.minsx.ccs.core.model.base.CCSBucket;
@@ -19,6 +21,8 @@ import com.minsx.ccs.core.model.base.CCSObjectList;
 import com.minsx.ccs.core.model.base.CCSObjectMetadata;
 import com.minsx.ccs.core.model.base.CCSObjectSummary;
 import com.minsx.ccs.core.model.base.CCSOwner;
+import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
+import com.minsx.ccs.core.model.response.CCSResponseMessage;
 import com.minsx.ccs.core.type.UnknownType;
 
 public class AliyunOSSParseUtil {
@@ -110,6 +114,32 @@ public class AliyunOSSParseUtil {
 		ccsBucket.setStorageClass(ossBucket.getStorageClass().toString());
 		return ccsBucket;
 	}
+	
+	/**
+	 * OSS PutObjectResult 到 CCSPutObjectResponse
+	 */
+	@SuppressWarnings("deprecation")
+	public static CCSPutObjectResponse parseToCCSPutObjectResponse(PutObjectResult result) {
+		CCSPutObjectResponse ccsPutObjectResponse = new CCSPutObjectResponse();
+		ccsPutObjectResponse.seteTag(result.getETag());
+		ccsPutObjectResponse.setResponseBody(result.getCallbackResponseBody());
+		ccsPutObjectResponse.setResponseMessage(parseToResponseMessage(result.getResponse()));
+		return ccsPutObjectResponse;
+	}
+	
+	/**
+	 * OSS ResponseMessage 到 CCSResponseMessage
+	 */
+	public static CCSResponseMessage parseToResponseMessage(ResponseMessage responseMessage) {
+		CCSResponseMessage ccsResponseMessage = new CCSResponseMessage();
+		ccsResponseMessage.setContent(responseMessage.getContent());
+		ccsResponseMessage.setContentLength(responseMessage.getContentLength());
+		ccsResponseMessage.setHeaders(responseMessage.getHeaders());
+		ccsResponseMessage.setStatusCode(responseMessage.getStatusCode());
+		ccsResponseMessage.setUri(responseMessage.getUri());
+		return ccsResponseMessage;
+	}
+	
 	
 	//---------------------------------------------分隔符----------------------------------------------------------
 	/**
