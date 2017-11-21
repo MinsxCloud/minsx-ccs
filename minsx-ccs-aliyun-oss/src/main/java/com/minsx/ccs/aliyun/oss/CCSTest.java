@@ -14,9 +14,9 @@ public class CCSTest {
 	
 	public static void main(String[] args) throws NativeClientCastException {
 		AliyunOSSConfig aliyunOSSConfig = new AliyunOSSConfig();
-		aliyunOSSConfig.setEndPoint("http://oss-cn-shanghai.aliyuncs.com");
-		aliyunOSSConfig.setAccessKeyId("LTAIczLFMZV7mdDU");
-		aliyunOSSConfig.setAccessKeySecret("9z04n82aNQpphfTXFeLWgPJI2T9wlq");
+		aliyunOSSConfig.setEndPoint("xxxxxx");
+		aliyunOSSConfig.setAccessKeyId("xxxxx");
+		aliyunOSSConfig.setAccessKeySecret("xxxxx");
 		CCSClient ccsClient = new AliyunOSSImpl(aliyunOSSConfig);
 		
 		/*ccsClient.getObjectMetadata("rtc-hospital", "advinst汉化.chm").getUserMetaData().forEach((key,value)->{
