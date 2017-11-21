@@ -1,21 +1,22 @@
 package com.minsx.ccs.baidu.bos;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
-import com.minsx.ccs.core.able.ListObjectsRequestable;
-import com.minsx.ccs.core.able.ObjectRequestable;
-import com.minsx.ccs.core.able.PageRequestable;
-import com.minsx.ccs.core.able.PutObjectRequestable;
+import com.minsx.ccs.core.able.CCSListObjectsRequestable;
+import com.minsx.ccs.core.able.CCSGetObjectRequestable;
+import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
+import com.minsx.ccs.core.able.CCSPutObjectRequestable;
 import com.minsx.ccs.core.config.BaiduBOSConfig;
 import com.minsx.ccs.core.exception.NativeClientCastException;
-import com.minsx.ccs.core.model.CCSBucket;
-import com.minsx.ccs.core.model.CCSObject;
-import com.minsx.ccs.core.model.CCSObjectList;
-import com.minsx.ccs.core.model.CCSObjectMetadata;
+import com.minsx.ccs.core.model.base.CCSBucket;
+import com.minsx.ccs.core.model.base.CCSObject;
+import com.minsx.ccs.core.model.base.CCSObjectList;
+import com.minsx.ccs.core.model.base.CCSObjectMetadata;
 import com.minsx.ccs.core.service.CCSClient;
 
 public class BaiduBOSImpl implements CCSClient {
@@ -80,7 +81,7 @@ public class BaiduBOSImpl implements CCSClient {
 	}
 
 	@Override
-	public void putObject(String sourceFilePath, String bucketName, String ccsObjectPath) {
+	public void putObject( String bucketName, String ccsObjectPath,String sourceFilePath) {
 		bosClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
 	}
 
@@ -112,17 +113,17 @@ public class BaiduBOSImpl implements CCSClient {
 	}
 
 	@Override
-	public CCSObjectList listObjects(PageRequestable pageable) {
+	public CCSObjectList listObjects(CCSPageObjectsRequestable pageable) {
 		return null;
 	}
 
 	@Override
-	public CCSObjectList listObjects(ListObjectsRequestable listObjectsRequestable) {
+	public CCSObjectList listObjects(CCSListObjectsRequestable listObjectsRequestable) {
 		return null;
 	}
 
 	@Override
-	public CCSObject getObject(ObjectRequestable objectRequestable) {
+	public CCSObject getObject(CCSGetObjectRequestable objectRequestable) {
 		return null;
 	}
 
@@ -132,7 +133,23 @@ public class BaiduBOSImpl implements CCSClient {
 	}
 
 	@Override
-	public void putObject(PutObjectRequestable putObjectRequestable) {
+	public void putObject(CCSPutObjectRequestable putObjectRequestable) {
+	}
+
+	@Override
+	public void putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
+		bosClient.putObject(bucketName, ccsObjectPath, inputStream);
+	}
+
+	@Override
+	public void putObject(String bucketName, String ccsObjectPath, File sourceFile) {
+		bosClient.putObject(bucketName, ccsObjectPath, sourceFile);
+	}
+
+	@Override
+	public void putObject(String bucketName, String ccsObjectPath, File sourceFile,
+			CCSObjectMetadata ccsObjectMetadata) {
+		
 	}
 
 }

@@ -1,6 +1,4 @@
-package com.minsx.ccs.core.model;
-
-import com.minsx.ccs.core.able.CallBack;
+package com.minsx.ccs.core.model.request;
 
 public class CCSPutBigObjectRequest {
 	
@@ -12,8 +10,6 @@ public class CCSPutBigObjectRequest {
     private String sourceFilePath;
     //是否开启断点续传
     private boolean enableCheckpoint = false;
-    //上传成功后的回调
-    private CallBack callBack;
     
 	public long getPartSize() {
 		return partSize;
@@ -39,11 +35,4 @@ public class CCSPutBigObjectRequest {
 	public void setEnableCheckpoint(boolean enableCheckpoint) {
 		this.enableCheckpoint = enableCheckpoint;
 	}
-	public CallBack getCallBack() {
-		return callBack;
-	}
-	public void setCallBack(CallBack callBack) {
-		this.callBack = callBack;
-	}
-
 }

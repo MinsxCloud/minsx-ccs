@@ -1,6 +1,6 @@
 package com.minsx.ccs.core.able;
 
-public interface PutBigObjectRequestable {
+public interface CCSPutBigObjectRequestable {
 	
 	public String getBucketName();
 	
@@ -13,7 +13,5 @@ public interface PutBigObjectRequestable {
 	public String getSourceFilePath();
 	
 	public Boolean isEnableCheckpoint();
-	
-	public CallBack getCallBack();
 
 }

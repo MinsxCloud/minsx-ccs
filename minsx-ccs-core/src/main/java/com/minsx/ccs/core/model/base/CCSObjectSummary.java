@@ -1,9 +1,9 @@
-package com.minsx.ccs.core.model;
+package com.minsx.ccs.core.model.base;
 
 import java.util.Date;
 
 /**
- * CcsObjectSummary 公共云存储对象概要信心
+ * CcsObjectSummary 公共云存储对象概要信息
  * created by Joker on 2017年11月7日
  */
 public class CCSObjectSummary {

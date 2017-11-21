@@ -1,6 +1,6 @@
 package com.minsx.ccs.core.able;
 
-public interface PageRequestable {
+public interface CCSPageObjectsRequestable {
 
 	Integer getPageIndex();
 
@@ -10,8 +10,8 @@ public interface PageRequestable {
 
 	String getBucketName();
 	
-	PageRequestable next();
+	CCSPageObjectsRequestable next();
 	
-	PageRequestable previous();
+	CCSPageObjectsRequestable previous();
 	
 }

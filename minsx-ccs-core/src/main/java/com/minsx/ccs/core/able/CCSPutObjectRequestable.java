@@ -3,9 +3,9 @@ package com.minsx.ccs.core.able;
 import java.io.File;
 import java.io.InputStream;
 
-import com.minsx.ccs.core.model.CCSObjectMetadata;
+import com.minsx.ccs.core.model.base.CCSObjectMetadata;
 
-public interface PutObjectRequestable {
+public interface CCSPutObjectRequestable {
 	
 	public String getBucketName();
 	
@@ -16,7 +16,5 @@ public interface PutObjectRequestable {
 	public InputStream getInputStream();
 	
 	public CCSObjectMetadata getMetadata();
-	
-	public CallBack getCallBack();
 
 }

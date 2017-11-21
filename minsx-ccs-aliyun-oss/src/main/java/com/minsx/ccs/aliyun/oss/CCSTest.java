@@ -1,10 +1,13 @@
 package com.minsx.ccs.aliyun.oss;
 
-import java.util.List;
+import java.io.File;
+import java.io.InputStream;
 
+import com.minsx.ccs.core.able.CCSPutObjectRequestable;
 import com.minsx.ccs.core.config.AliyunOSSConfig;
 import com.minsx.ccs.core.exception.NativeClientCastException;
-import com.minsx.ccs.core.model.CCSBucket;
+import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.request.CCSPutObjectRqeuest;
 import com.minsx.ccs.core.service.CCSClient;
 
 public class CCSTest {
@@ -59,11 +62,16 @@ public class CCSTest {
 		});
 		ccsClient.shutdown();*/
 		
-		List<CCSBucket> ccsBuckets = ccsClient.listCCSBuckets();
+		/*List<CCSBucket> ccsBuckets = ccsClient.listCCSBuckets();
 		ccsBuckets.forEach(bucket->{
 			System.out.println(bucket.getName());
-		});
+		});*/
 		
+		CCSPutObjectRqeuest ccsPutObjectRqeuest = new CCSPutObjectRqeuest();
+		ccsPutObjectRqeuest.setBucketName("rtc-hospital");
+		ccsPutObjectRqeuest.setCcsObjectPath("www.txt");
+		ccsPutObjectRqeuest.setFile(new File("E:\\Temp\\新建文件夹\\minsx-document\\Java文档\\spring-boot-中文参考指南.pdf"));
+		ccsClient.putObject(ccsPutObjectRqeuest);
 		
 		
 	}

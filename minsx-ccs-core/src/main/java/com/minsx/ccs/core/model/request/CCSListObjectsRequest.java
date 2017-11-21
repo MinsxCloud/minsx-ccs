@@ -1,8 +1,8 @@
-package com.minsx.ccs.core.model;
+package com.minsx.ccs.core.model.request;
 
-import com.minsx.ccs.core.able.ListObjectsRequestable;
+import com.minsx.ccs.core.able.CCSListObjectsRequestable;
 
-public class CCSListObjectsRequest extends CCSBaseListRequest implements ListObjectsRequestable {
+public class CCSListObjectsRequest extends CCSBaseListObjectsRequest implements CCSListObjectsRequestable {
 
 	private String marker;
 	private Integer maxKeys;
@@ -50,37 +50,37 @@ public class CCSListObjectsRequest extends CCSBaseListRequest implements ListObj
 	}
 
 	@Override
-	public ListObjectsRequestable withBucketName(String bucketName) {
+	public CCSListObjectsRequestable withBucketName(String bucketName) {
 		setBucketName(bucketName);
 		return this;
 	}
 
 	@Override
-	public ListObjectsRequestable withPrefix(String prefix) {
+	public CCSListObjectsRequestable withPrefix(String prefix) {
 		setPrefix(prefix);
 		return this;
 	}
 
 	@Override
-	public ListObjectsRequestable withMarker(String marker) {
+	public CCSListObjectsRequestable withMarker(String marker) {
 		setMarker(marker);
 		return this;
 	}
 
 	@Override
-	public ListObjectsRequestable withMaxKeys(Integer maxKeys) {
+	public CCSListObjectsRequestable withMaxKeys(Integer maxKeys) {
 		setMaxKeys(maxKeys);
 		return this;
 	}
 
 	@Override
-	public ListObjectsRequestable withDelimiter(String delimiter) {
+	public CCSListObjectsRequestable withDelimiter(String delimiter) {
 		setDelimiter(delimiter);
 		return this;
 	}
 
 	@Override
-	public ListObjectsRequestable withEncodingType(String encodingType) {
+	public CCSListObjectsRequestable withEncodingType(String encodingType) {
 		setEncodingType(encodingType);
 		return this;
 	}

@@ -1,12 +1,12 @@
-package com.minsx.ccs.core.model;
+package com.minsx.ccs.core.model.request;
 
-public class CCSBaseListRequest {
+public abstract class CCSBaseListObjectsRequest {
 
 	private String bucketName;
 
 	private String prefix;
 
-	public CCSBaseListRequest(String bucketName) {
+	public CCSBaseListObjectsRequest(String bucketName) {
 		this.bucketName=bucketName;
 	}
 	

@@ -11,14 +11,14 @@ import com.aliyun.oss.model.ObjectListing;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.Owner;
 import com.aliyun.oss.model.PutObjectRequest;
-import com.minsx.ccs.core.able.ListObjectsRequestable;
-import com.minsx.ccs.core.model.CCSBucket;
-import com.minsx.ccs.core.model.CCSObject;
-import com.minsx.ccs.core.model.CCSObjectList;
-import com.minsx.ccs.core.model.CCSObjectMetadata;
-import com.minsx.ccs.core.model.CCSObjectSummary;
-import com.minsx.ccs.core.model.CCSOwner;
-import com.minsx.ccs.core.model.CCSPutObjectRqeuest;
+import com.minsx.ccs.core.able.CCSListObjectsRequestable;
+import com.minsx.ccs.core.able.CCSPutObjectRequestable;
+import com.minsx.ccs.core.model.base.CCSBucket;
+import com.minsx.ccs.core.model.base.CCSObject;
+import com.minsx.ccs.core.model.base.CCSObjectList;
+import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.base.CCSObjectSummary;
+import com.minsx.ccs.core.model.base.CCSOwner;
 import com.minsx.ccs.core.type.UnknownType;
 
 public class AliyunOSSParseUtil {
@@ -96,35 +96,6 @@ public class AliyunOSSParseUtil {
 		return ccsObject;
 	}
 	
-	//---------------------------------------------分隔符----------------------------------------------------------
-	/**
-	 * CCSObjectMetadata 到 ObjectMetadata
-	 */
-	public static ObjectMetadata parseToObjectMetadata(CCSObjectMetadata ccsObjectMetadata) {
-		ObjectMetadata objectMetadata = new ObjectMetadata();
-		objectMetadata.setUserMetadata(ccsObjectMetadata.getUserMetaData());
-		objectMetadata.setLastModified(ccsObjectMetadata.getLastModified());
-		objectMetadata.setContentType(ccsObjectMetadata.getContentType());
-		objectMetadata.setContentMD5(ccsObjectMetadata.getContentMD5());
-		objectMetadata.setContentLength(ccsObjectMetadata.getContentLength());
-		objectMetadata.setContentEncoding(ccsObjectMetadata.getContentEncoding());
-		return objectMetadata;
-	}
-	
-	/**
-	 * ListObjectsRequestable 到 ListObjectsRequest
-	 */
-	public static ListObjectsRequest parseToListObjectsRequest(ListObjectsRequestable listObjectsRequestable) {
-		ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
-		listObjectsRequest.withBucketName(listObjectsRequestable.getBucketName()).withKey(UnknownType.UNKNOWN_KEY);
-		listObjectsRequest.setDelimiter(listObjectsRequestable.getDelimiter());
-		listObjectsRequest.setEncodingType(listObjectsRequestable.getEncodingType());
-		listObjectsRequest.setMarker(listObjectsRequestable.getMarker());
-		listObjectsRequest.setMaxKeys(listObjectsRequestable.getMaxKeys());
-		listObjectsRequest.setPrefix(listObjectsRequestable.getPrefix());
-		return listObjectsRequest;
-	}
-
 	/**
 	 * OSSBucket 到 CCSBucket
 	 */
@@ -140,21 +111,52 @@ public class AliyunOSSParseUtil {
 		return ccsBucket;
 	}
 	
+	//---------------------------------------------分隔符----------------------------------------------------------
 	/**
-	 * CCSPutObjectRqeuest 到 PutObjectRequest
+	 * CCSObjectMetadata 到 OSS ObjectMetadata
 	 */
-	public static PutObjectRequest parseToPutObjectRequest(CCSPutObjectRqeuest ccsPutObjectRqeuest) {
-		PutObjectRequest putObjectRequest = null;
-		if (ccsPutObjectRqeuest.getFile()!=null) {
-			putObjectRequest = new PutObjectRequest(ccsPutObjectRqeuest.getBucketName(),ccsPutObjectRqeuest.getCcsObjectPath(),ccsPutObjectRqeuest.getFile());
-		}else if (ccsPutObjectRqeuest.getInputStream()!=null) {
-			putObjectRequest = new PutObjectRequest(ccsPutObjectRqeuest.getBucketName(),ccsPutObjectRqeuest.getCcsObjectPath(),ccsPutObjectRqeuest.getInputStream());
+	public static ObjectMetadata parseToObjectMetadata(CCSObjectMetadata ccsObjectMetadata) {
+		ObjectMetadata objectMetadata = new ObjectMetadata();
+		if (ccsObjectMetadata!=null) {
+			objectMetadata.setUserMetadata(ccsObjectMetadata.getUserMetaData());
+			objectMetadata.setLastModified(ccsObjectMetadata.getLastModified());
+			objectMetadata.setContentType(ccsObjectMetadata.getContentType());
+			objectMetadata.setContentMD5(ccsObjectMetadata.getContentMD5());
+			objectMetadata.setContentLength(ccsObjectMetadata.getContentLength());
+			objectMetadata.setContentEncoding(ccsObjectMetadata.getContentEncoding());
 		}
-		putObjectRequest.setFile(ccsPutObjectRqeuest.getFile());
-		putObjectRequest.setInputStream(ccsPutObjectRqeuest.getInputStream());
-		putObjectRequest.setKey(ccsPutObjectRqeuest.getCcsObjectPath());
-		putObjectRequest.setBucketName(ccsPutObjectRqeuest.getBucketName());
-		putObjectRequest.setMetadata(parseToObjectMetadata(ccsPutObjectRqeuest.getMetadata()));
+		return objectMetadata;
+	}
+	
+	/**
+	 * CCS ListObjectsRequestable 到 OSS ListObjectsRequest
+	 */
+	public static ListObjectsRequest parseToListObjectsRequest(CCSListObjectsRequestable listObjectsRequestable) {
+		ListObjectsRequest listObjectsRequest = new ListObjectsRequest();
+		listObjectsRequest.withBucketName(listObjectsRequestable.getBucketName()).withKey(UnknownType.UNKNOWN_KEY);
+		listObjectsRequest.setDelimiter(listObjectsRequestable.getDelimiter());
+		listObjectsRequest.setEncodingType(listObjectsRequestable.getEncodingType());
+		listObjectsRequest.setMarker(listObjectsRequestable.getMarker());
+		listObjectsRequest.setMaxKeys(listObjectsRequestable.getMaxKeys());
+		listObjectsRequest.setPrefix(listObjectsRequestable.getPrefix());
+		return listObjectsRequest;
+	}
+	
+	/**
+	 * CCS PutObjectRequestable 到 OSS PutObjectRequest
+	 */
+	public static PutObjectRequest parseToPutObjectRequest(CCSPutObjectRequestable putObjectRequestable) {
+		PutObjectRequest putObjectRequest = null;
+		if (putObjectRequestable.getFile()!=null) {
+			putObjectRequest = new PutObjectRequest(putObjectRequestable.getBucketName(),putObjectRequestable.getCcsObjectPath(),putObjectRequestable.getFile());
+		}else if (putObjectRequestable.getInputStream()!=null) {
+			putObjectRequest = new PutObjectRequest(putObjectRequestable.getBucketName(),putObjectRequestable.getCcsObjectPath(),putObjectRequestable.getInputStream());
+		}
+		putObjectRequest.setFile(putObjectRequestable.getFile());
+		putObjectRequest.setInputStream(putObjectRequestable.getInputStream());
+		putObjectRequest.setKey(putObjectRequestable.getCcsObjectPath());
+		putObjectRequest.setBucketName(putObjectRequestable.getBucketName());
+		putObjectRequest.setMetadata(parseToObjectMetadata(putObjectRequestable.getMetadata()));
 		return putObjectRequest;
 	}
 	

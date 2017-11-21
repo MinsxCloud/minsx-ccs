@@ -1,15 +1,17 @@
 package com.minsx.ccs.core.service;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
-import com.minsx.ccs.core.able.ListObjectsRequestable;
-import com.minsx.ccs.core.able.ObjectRequestable;
-import com.minsx.ccs.core.able.PageRequestable;
-import com.minsx.ccs.core.able.PutObjectRequestable;
-import com.minsx.ccs.core.model.CCSBucket;
-import com.minsx.ccs.core.model.CCSObject;
-import com.minsx.ccs.core.model.CCSObjectList;
-import com.minsx.ccs.core.model.CCSObjectMetadata;
+import com.minsx.ccs.core.able.CCSListObjectsRequestable;
+import com.minsx.ccs.core.able.CCSGetObjectRequestable;
+import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
+import com.minsx.ccs.core.able.CCSPutObjectRequestable;
+import com.minsx.ccs.core.model.base.CCSBucket;
+import com.minsx.ccs.core.model.base.CCSObject;
+import com.minsx.ccs.core.model.base.CCSObjectList;
+import com.minsx.ccs.core.model.base.CCSObjectMetadata;
 
 /**
  * CCSClient created by web on 2017年11月4日
@@ -26,24 +28,30 @@ public interface CCSClient {
 	
 	public CCSObjectList listObjects(String bucketName, String ccsFolderPath);
 	
-	public CCSObjectList listObjects(ListObjectsRequestable listObjectsRequestable);
+	public CCSObjectList listObjects(CCSListObjectsRequestable listObjectsRequestable);
 	
-	public CCSObjectList listObjects(PageRequestable pageable);
+	public CCSObjectList listObjects(CCSPageObjectsRequestable pageable);
 
 	public Boolean doesObjectExist(String bucketName, String ccsObjectPath);
 	
 	public CCSObject getObject(String bucketName, String ccsObjectPath);
 	
-	public CCSObject getObject(ObjectRequestable objectRequestable);
+	public CCSObject getObject(CCSGetObjectRequestable objectRequestable);
 
 	public CCSObjectMetadata getObjectMetadata(String bucketName, String ccsObjectPath);
 
 	public void copyObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,
 			String destinationObjectPath);
 
-	public void putObject(String sourceFilePath, String bucketName, String ccsObjectPath);
+	public void putObject(String bucketName, String ccsObjectPath,String sourceFilePath);
 	
-	public void putObject(PutObjectRequestable putObjectRequestable);
+	public void putObject(String bucketName, String ccsObjectPath,File sourceFile);
+	
+	public void putObject(String bucketName, String ccsObjectPath,File sourceFile,CCSObjectMetadata ccsObjectMetadata);
+	
+	public void putObject(String bucketName,String ccsObjectPath,InputStream inputStream);
+	
+	public void putObject(CCSPutObjectRequestable putObjectRequestable);
 
 	public void deleteObject(String bucketName, String ccsObjectPath);
 

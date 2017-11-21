@@ -1,11 +1,11 @@
-package com.minsx.ccs.core.model;
+package com.minsx.ccs.core.model.request;
 
-import com.minsx.ccs.core.able.PageRequestable;
+import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
 
 /**
  * Paged access object created by Joker on 2017年11月10日
  */
-public class CCSPageRequest implements PageRequestable {
+public class CCSPageObjectsRequest implements CCSPageObjectsRequestable {
 
 	private final static Integer DEFAULT_PAGE_INDEX = 10;
 	private final static Integer DEFAULT_PAGE_SIZE = 10;
@@ -15,14 +15,14 @@ public class CCSPageRequest implements PageRequestable {
 	private Integer pageIndex;
 	private Integer pageSize;
 
-	public CCSPageRequest(String bucketName, String ccsPath, Integer pageIndex, Integer pageSize) {
+	public CCSPageObjectsRequest(String bucketName, String ccsPath, Integer pageIndex, Integer pageSize) {
 		this.bucketName = bucketName;
 		this.prefix = ccsPath;
 		this.pageIndex = pageIndex;
 		this.pageSize = pageSize;
 	}
 
-	public CCSPageRequest(String bucketName, String ccsPath) {
+	public CCSPageObjectsRequest(String bucketName, String ccsPath) {
 		this(bucketName, ccsPath, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE);
 	}
 
@@ -63,13 +63,13 @@ public class CCSPageRequest implements PageRequestable {
 	}
 
 	@Override
-	public PageRequestable next() {
+	public CCSPageObjectsRequestable next() {
 		pageIndex++;
 		return this;
 	}
 
 	@Override
-	public PageRequestable previous() {
+	public CCSPageObjectsRequestable previous() {
 		pageIndex--;
 		return this;
 	}
