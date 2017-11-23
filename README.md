@@ -23,28 +23,105 @@
 + 需要具备扩展性业务需求(将来会使用以上云平台对象存储)
 + 本地存储和第三方云存储混合开发的企业
 
-### 使用
+### 使用示例
+	
+```java
+private CCSClient ccsClient;
 
- 	AliyunOSSConfig aliyunOSSConfig = new AliyunOSSConfig();
-	aliyunOSSConfig.setEndPoint("xxxxx");
-	aliyunOSSConfig.setAccessKeyId("xxxxx");
-	aliyunOSSConfig.setAccessKeySecret("xxxxx");
-	CCSClient ccsClient = new AliyunOSSImpl(aliyunOSSConfig);
+	@Before
+	public void initial() {
+		AliyunOSSConfig aliyunOSSConfig = new AliyunOSSConfig();
+		aliyunOSSConfig.setEndPoint("http://oss-cn-hangzhou.aliyuncs.com");
+		aliyunOSSConfig.setAccessKeyId("LTAI94azdAVJieZJ");
+		aliyunOSSConfig.setAccessKeySecret("SaFDFCHSGCljmleQtRdVuZHmeedvty");
+		ccsClient = new AliyunOSSImpl(aliyunOSSConfig);
+	}
+	
+	@After
+	public void end() {
+		ccsClient.shutdown();
+	}
 
-	List<CCSBucket> ccsBuckets = ccsClient.listCCSBuckets();
-	ccsBuckets.forEach(bucket->{
-		System.out.println(bucket.getName());
-	});
+	@Test
+	public void getObjectMetaData() {
+		ccsClient.getObjectMetadata("minsx-bucket", "A.docx").getUserMetaData().forEach((key,value)->{
+			System.out.println(key);
+			System.out.println(value);
+		});
+	}
 	
-	ccsClient.deleteObject("rtc-hospital", "web.zip");
-	ccsClient.putObject("E:\\document\\web.zip", "rtc-hospital", "web.zip");
-	ccsClient.getObject("bucketName", "web.zip");
-	ccsClient.getObjectMetadata("bucketName", "web.zip").getUserMetaData();
+	@Test
+	public void getObject() {
+		CCSObject ccsObject = ccsClient.getObject("minsx-bucket", "A.docx");
+		System.out.println(ccsObject);
+	}
 	
-	CCSObjectList ccsObjectList = ccsClient.getObjectList("bucketName", "objectPath");
-	List<CCSObjectSummary> ccsObjectSummaries =  ccsObjectList.getCcsObjectSummaries();
-	ccsObjectSummaries.forEach(ccsObjectSummary->{
-		System.out.println(ccsObjectSummary.getCcsPath());
-	});
+	@Test
+	public void deleteObject() {
+		ccsClient.deleteObject("minsx-bucket", "A.docx");
+	}
 	
+	@Test
+	public void putObject() {
+		CCSPutObjectResponse ccsPutObjectResponse = ccsClient.putObject("minsx-bucket", "A.docx","E:\\Temp\\A.docx");
+		System.out.println(JSON.toJSONString(ccsPutObjectResponse));
+	}
+	
+	@Test
+	public void listObjects() {
+		CCSObjectList ccsObjectList = ccsClient.listObjects("minsx-bucket", "hospital");
+		List<CCSObjectSummary> ccsObjectSummaries =  ccsObjectList.getCcsObjectSummaries();
+		ccsObjectSummaries.forEach(ccsObjectSummary->{
+			System.out.println(ccsObjectSummary.getCcsPath());
+		});
+	}
+	
+	@Test
+	public void listAllObjects() {
+		final int maxKeys = 10;
+		String nextMarker = null;
+		CCSObjectList objectListing=null;
+		int sum=0;
+		do {
+		    objectListing = ccsClient.listObjects(new CCSListObjectsRequest("minsx-bucket").withPrefix("oss-log").withMarker(nextMarker).withMaxKeys(maxKeys));
+		    List<CCSObjectSummary> sums = objectListing.getCcsObjectSummaries();
+		    for (CCSObjectSummary s : sums) {
+		    	System.out.println(s.getCcsPath());
+		    }
+		    nextMarker = objectListing.getNextMarker();
+		    sum++;
+		} while (objectListing.isTruncated());
+		 System.out.println(sum);
+	}
+	
+	@Test
+	public void listObjectsByPage() {
+		CCSObjectList ccsObjectList = ccsClient.listObjects(new CCSPageObjectsRequest("minsx-bucket", "oss-log", 1, 10));
+		List<CCSObjectSummary> ccsObjectSummaries =  ccsObjectList.getCcsObjectSummaries();
+		ccsObjectSummaries.forEach(ccsObjectSummary->{
+			System.out.println(ccsObjectSummary.getCcsPath());
+		});
+		ccsClient.shutdown();
+	}
+	
+	@Test
+	public void listCCSBuckets() {
+		List<CCSBucket> ccsBuckets = ccsClient.listCCSBuckets();
+		ccsBuckets.forEach(bucket->{
+			System.out.println(bucket.getName());
+		});
+	}
+	
+	@Test
+	public void putObjectByCCSPutObjectRqeuest() {
+		CCSPutObjectRqeuest ccsPutObjectRqeuest = new CCSPutObjectRqeuest();
+		ccsPutObjectRqeuest.setBucketName("minsx-bucket");
+		ccsPutObjectRqeuest.setCcsObjectPath("A.docx");
+		ccsPutObjectRqeuest.setFile(new File("E:\\Temp\\A.docx"));
+		ccsClient.putObject(ccsPutObjectRqeuest);
+	}
+```
++ 注：我们对原生Key做了重命名为ccsObjectPath 更贴切(实际对象存储中并不存在路径和文件夹)
++ 在语法上我们尽量靠近各原生SDK以降低学习成本
+
 	
