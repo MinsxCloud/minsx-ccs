@@ -22,3 +22,19 @@
 + 数据托管在以上多家云平台对象存储的企业
 + 需要具备扩展性业务需求(将来会使用以上云平台对象存储)
 + 本地存储和第三方云存储混合开发的企业
+
+### 使用
+
+ 	AliyunOSSConfig aliyunOSSConfig = new AliyunOSSConfig();
+	aliyunOSSConfig.setEndPoint("xxxxx");
+	aliyunOSSConfig.setAccessKeyId("xxxxx");
+	aliyunOSSConfig.setAccessKeySecret("xxxxx");
+	CCSClient ccsClient = new AliyunOSSImpl(aliyunOSSConfig);
+	
+	
+	CCSObjectList ccsObjectList = ccsClient.getObjectList("bucketName", "objectPath");
+	List<CCSObjectSummary> ccsObjectSummaries =  ccsObjectList.getCcsObjectSummaries();
+	ccsObjectSummaries.forEach(ccsObjectSummary->{
+		System.out.println(ccsObjectSummary.getCcsPath());
+	});
+	
