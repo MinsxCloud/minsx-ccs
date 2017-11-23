@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-minsx-ccs-baidu-bos/dependents/*.jar
 *.war
 *.ear
 *.zip
@@ -38,3 +37,5 @@ minsx-ccs-tencent-cos/logs/
 .idea/
 minsx-ccs-baidu-bos/jar/documentation/
 minsx-ccs-api/target/
+minsx-ccs-aliyun-oss/src/main/java/com/minsx/ccs/aliyun/oss/CCSTest.java
+minsx-ccs-aliyun-oss/src/main/java/com/minsx/ccs/aliyun/oss/OSSTest.java
