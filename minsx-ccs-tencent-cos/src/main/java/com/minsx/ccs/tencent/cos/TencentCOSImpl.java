@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import com.minsx.ccs.core.able.CCSGetObjectRequestable;
+import com.minsx.ccs.core.able.CCSInitiateMultipartPutRequestable;
 import com.minsx.ccs.core.able.CCSListObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPutObjectRequestable;
@@ -14,7 +15,10 @@ import com.minsx.ccs.core.model.base.CCSBucket;
 import com.minsx.ccs.core.model.base.CCSObject;
 import com.minsx.ccs.core.model.base.CCSObjectList;
 import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.request.CCSPutPartRequest;
+import com.minsx.ccs.core.model.response.CCSInitiateMultipartPutResponse;
 import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
+import com.minsx.ccs.core.model.response.CCSPutPartResponse;
 import com.minsx.ccs.core.service.CCSClient;
 import com.qcloud.cos.COS;
 import com.qcloud.cos.COSClient;
@@ -158,5 +162,17 @@ public class TencentCOSImpl implements CCSClient {
 			CCSObjectMetadata ccsObjectMetadata) {
 		return null;
 
+	}
+
+	@Override
+	public CCSInitiateMultipartPutResponse initiateMultipartPut(
+			CCSInitiateMultipartPutRequestable ccsInitiateMultipartPutRequestable) {
+		return null;
+	}
+
+	@Override
+	public CCSPutPartResponse putPart(CCSPutPartRequest ccsPutObjectRequestable) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -16,5 +16,6 @@ public class BosTest {
 	    new ObjectMetadata();
 	    client.listObjects("").getContents().get(0);
 	    client.shutdown();
+	    
 	}
 }

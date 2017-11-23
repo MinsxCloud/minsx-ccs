@@ -9,6 +9,7 @@ import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
 import com.minsx.ccs.core.able.CCSListObjectsRequestable;
 import com.minsx.ccs.core.able.CCSGetObjectRequestable;
+import com.minsx.ccs.core.able.CCSInitiateMultipartPutRequestable;
 import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPutObjectRequestable;
 import com.minsx.ccs.core.config.BaiduBOSConfig;
@@ -17,7 +18,10 @@ import com.minsx.ccs.core.model.base.CCSBucket;
 import com.minsx.ccs.core.model.base.CCSObject;
 import com.minsx.ccs.core.model.base.CCSObjectList;
 import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.request.CCSPutPartRequest;
+import com.minsx.ccs.core.model.response.CCSInitiateMultipartPutResponse;
 import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
+import com.minsx.ccs.core.model.response.CCSPutPartResponse;
 import com.minsx.ccs.core.service.CCSClient;
 
 public class BaiduBOSImpl implements CCSClient {
@@ -160,6 +164,17 @@ public class BaiduBOSImpl implements CCSClient {
 	@Override
 	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream,
 			CCSObjectMetadata ccsObjectMetadata) {
+		return null;
+	}
+
+	@Override
+	public CCSInitiateMultipartPutResponse initiateMultipartPut(
+			CCSInitiateMultipartPutRequestable ccsInitiateMultipartPutRequestable) {
+		return null;
+	}
+
+	@Override
+	public CCSPutPartResponse putPart(CCSPutPartRequest ccsPutObjectRequestable) {
 		return null;
 	}
 

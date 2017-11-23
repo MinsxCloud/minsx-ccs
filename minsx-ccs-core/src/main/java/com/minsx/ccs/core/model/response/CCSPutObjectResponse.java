@@ -2,14 +2,12 @@ package com.minsx.ccs.core.model.response;
 
 import java.io.InputStream;
 
-public class CCSPutObjectResponse {
+public class CCSPutObjectResponse extends CCSBaseResponse{
 
 	private String eTag;
 
 	private InputStream responseBody;
 	
-	private CCSResponseMessage responseMessage;
-
 	public String geteTag() {
 		return eTag;
 	}
@@ -25,13 +23,4 @@ public class CCSPutObjectResponse {
 	public void setResponseBody(InputStream responseBody) {
 		this.responseBody = responseBody;
 	}
-
-	public CCSResponseMessage getResponseMessage() {
-		return responseMessage;
-	}
-
-	public void setResponseMessage(CCSResponseMessage responseMessage) {
-		this.responseMessage = responseMessage;
-	}
-	
 }
