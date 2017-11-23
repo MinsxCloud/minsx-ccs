@@ -1,7 +1,7 @@
 # Minsx-CCS
 
 ###### (Instruction : 如果说JPA是用于统一各数据库或ORM的框架,那么CCS即是统一各云存储的框架)
-#### 主要用于统一阿里云、百度云、腾讯云、七牛云等云存储及本地存储，提供一套简单通用的标准
+#### 主要用于统一阿里云、百度云、腾讯云、七牛云等云存储及本地存储，提供一套简单通用的调用标准
 
 ### 项目说明
 + 软件名称：Minsx-ccs (全称：minsx-common-cloud-storge 即公共云存储)
@@ -14,7 +14,7 @@
 	+ 腾讯云 COS
 	+ 七牛 KODO
 	+ 本地存储(操作系统文件形式的存储,非对象存储)
-+ 优点：开箱即用/配置简单/通用/可扩展
++ 优点：开箱即用/配置简单/通用/可扩展/为混合对象存储而生
 + 缺点：部分功能被阉割(注：您仍可以获取原生客户端进行更细致的操作)
 + 开源协议：Apache License Version 2.0 http://www.apache.org/licenses/
 				
@@ -121,7 +121,7 @@ private CCSClient ccsClient;
 		ccsClient.putObject(ccsPutObjectRqeuest);
 	}
 ```
-+ 注：我们对原生Key做了重命名为ccsObjectPath 更贴切(实际对象存储中并不存在路径和文件夹)
++ 注：我们对原生Key做了重命名为ccsObjectPath (实际对象存储中并不存在路径及文件夹等概念)
 + 在语法上我们尽量靠近各原生SDK以降低学习成本
 
 	
