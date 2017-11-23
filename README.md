@@ -30,11 +30,21 @@
 	aliyunOSSConfig.setAccessKeyId("xxxxx");
 	aliyunOSSConfig.setAccessKeySecret("xxxxx");
 	CCSClient ccsClient = new AliyunOSSImpl(aliyunOSSConfig);
+
+	List<CCSBucket> ccsBuckets = ccsClient.listCCSBuckets();
+	ccsBuckets.forEach(bucket->{
+		System.out.println(bucket.getName());
+	});
 	
+	ccsClient.deleteObject("rtc-hospital", "web.zip");
+	ccsClient.putObject("E:\\document\\web.zip", "rtc-hospital", "web.zip");
+	ccsClient.getObject("bucketName", "web.zip");
+	ccsClient.getObjectMetadata("bucketName", "web.zip").getUserMetaData();
 	
 	CCSObjectList ccsObjectList = ccsClient.getObjectList("bucketName", "objectPath");
 	List<CCSObjectSummary> ccsObjectSummaries =  ccsObjectList.getCcsObjectSummaries();
 	ccsObjectSummaries.forEach(ccsObjectSummary->{
 		System.out.println(ccsObjectSummary.getCcsPath());
 	});
+	
 	
