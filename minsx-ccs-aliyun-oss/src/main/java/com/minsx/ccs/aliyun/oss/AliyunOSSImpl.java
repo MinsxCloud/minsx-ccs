@@ -7,13 +7,17 @@ import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.CompleteMultipartUploadRequest;
+import com.aliyun.oss.model.CompleteMultipartUploadResult;
 import com.aliyun.oss.model.InitiateMultipartUploadRequest;
 import com.aliyun.oss.model.InitiateMultipartUploadResult;
 import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.ObjectListing;
+import com.aliyun.oss.model.PartETag;
 import com.aliyun.oss.model.PutObjectResult;
 import com.aliyun.oss.model.UploadPartRequest;
 import com.aliyun.oss.model.UploadPartResult;
+import com.minsx.ccs.core.able.CCSCompleteMultipartPutRequestable;
 import com.minsx.ccs.core.able.CCSGetObjectRequestable;
 import com.minsx.ccs.core.able.CCSInitiateMultipartPutRequestable;
 import com.minsx.ccs.core.able.CCSListObjectsRequestable;
@@ -21,11 +25,12 @@ import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPutObjectRequestable;
 import com.minsx.ccs.core.config.AliyunOSSConfig;
 import com.minsx.ccs.core.exception.NativeClientCastException;
-import com.minsx.ccs.core.model.base.CCSBucket;
-import com.minsx.ccs.core.model.base.CCSObject;
-import com.minsx.ccs.core.model.base.CCSObjectList;
-import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.model.CCSBucket;
+import com.minsx.ccs.core.model.model.CCSObject;
+import com.minsx.ccs.core.model.model.CCSObjectList;
+import com.minsx.ccs.core.model.model.CCSObjectMetadata;
 import com.minsx.ccs.core.model.request.CCSPutPartRequest;
+import com.minsx.ccs.core.model.response.CCSCompleteMultipartPutResponse;
 import com.minsx.ccs.core.model.response.CCSInitiateMultipartPutResponse;
 import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 import com.minsx.ccs.core.model.response.CCSPutPartResponse;
@@ -142,7 +147,7 @@ public class AliyunOSSImpl implements CCSClient {
 
 	@Override
 	public CCSObject getObject(CCSGetObjectRequestable objectRequestable) {
-		return this.getObject(objectRequestable.getBucketName(), objectRequestable.getCcsPath());
+		return this.getObject(objectRequestable.getBucketName(), objectRequestable.getCcsObjectPath());
 	}
 
 	@Override
@@ -203,6 +208,16 @@ public class AliyunOSSImpl implements CCSClient {
 		uploadPartRequest.setPartNumber(ccsPutObjectRequestable.getPartNumber());
 		UploadPartResult uploadPartResult = ossClient.uploadPart(uploadPartRequest);
 		return AliyunOSSParseUtil.parseToCCSPutPartResponse(uploadPartResult);
+	}
+
+	@Override
+	public CCSCompleteMultipartPutResponse completeMultipartUpload(
+			CCSCompleteMultipartPutRequestable ccsCompleteMultipartPutRequestable) {
+		List<PartETag> partETags = ccsCompleteMultipartPutRequestable.getCCSPartETags().stream().map( ccsPartETag->AliyunOSSParseUtil.parseToPartETag(ccsPartETag)).collect(Collectors.toList());
+		CompleteMultipartUploadRequest completeMultipartUploadRequest = 
+		        new CompleteMultipartUploadRequest(ccsCompleteMultipartPutRequestable.getBucketName(), ccsCompleteMultipartPutRequestable.getCcsObjectPath(), ccsCompleteMultipartPutRequestable.getUploadId(),partETags);
+		CompleteMultipartUploadResult ossResponse =  ossClient.completeMultipartUpload(completeMultipartUploadRequest);
+		return AliyunOSSParseUtil.parseToCCSCompleteMultipartPutResponse(ossResponse);
 	}
 
 

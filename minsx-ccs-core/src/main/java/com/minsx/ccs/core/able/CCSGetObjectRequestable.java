@@ -1,10 +1,6 @@
 package com.minsx.ccs.core.able;
 
-public interface CCSGetObjectRequestable {
-	
-	String getBucketName();
-	
-	String getCcsPath();
+public interface CCSGetObjectRequestable extends CCSBaseObjectRequest{
 	
 	CCSGetObjectRequestable withBucketName(String bucketName);
 	

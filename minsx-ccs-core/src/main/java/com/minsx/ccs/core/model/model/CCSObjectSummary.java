@@ -1,4 +1,4 @@
-package com.minsx.ccs.core.model.base;
+package com.minsx.ccs.core.model.model;
 
 import java.util.Date;
 

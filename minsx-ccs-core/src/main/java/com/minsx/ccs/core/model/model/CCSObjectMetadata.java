@@ -1,4 +1,4 @@
-package com.minsx.ccs.core.model.base;
+package com.minsx.ccs.core.model.model;
 /**
  * CcsObjectMetadata 用于存储云存储对象的元数据
  * created by Joker on 2017年11月6日

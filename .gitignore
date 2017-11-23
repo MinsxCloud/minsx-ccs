@@ -11,6 +11,7 @@
 .mtj.tmp/
 
 # Package Files #
+!minsx-ccs-baidu-bos/dependents/*.jar
 *.war
 *.ear
 *.zip

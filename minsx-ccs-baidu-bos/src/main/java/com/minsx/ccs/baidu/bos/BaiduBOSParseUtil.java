@@ -8,11 +8,11 @@ import com.baidubce.services.bos.model.BosObject;
 import com.baidubce.services.bos.model.BosObjectSummary;
 import com.baidubce.services.bos.model.ListObjectsResponse;
 import com.baidubce.services.bos.model.ObjectMetadata;
-import com.minsx.ccs.core.model.base.CCSObject;
-import com.minsx.ccs.core.model.base.CCSObjectList;
-import com.minsx.ccs.core.model.base.CCSObjectMetadata;
-import com.minsx.ccs.core.model.base.CCSObjectSummary;
-import com.minsx.ccs.core.model.base.CCSOwner;
+import com.minsx.ccs.core.model.model.CCSObject;
+import com.minsx.ccs.core.model.model.CCSObjectList;
+import com.minsx.ccs.core.model.model.CCSObjectMetadata;
+import com.minsx.ccs.core.model.model.CCSObjectSummary;
+import com.minsx.ccs.core.model.model.CCSOwner;
 import com.minsx.ccs.core.type.UnknownType;
 
 public class BaiduBOSParseUtil {

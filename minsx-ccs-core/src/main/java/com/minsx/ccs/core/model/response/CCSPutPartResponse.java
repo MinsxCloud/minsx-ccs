@@ -1,6 +1,6 @@
 package com.minsx.ccs.core.model.response;
 
-import com.minsx.ccs.core.model.base.CCSPartETag;
+import com.minsx.ccs.core.model.model.CCSPartETag;
 
 public class CCSPutPartResponse extends CCSBaseResponse {
 

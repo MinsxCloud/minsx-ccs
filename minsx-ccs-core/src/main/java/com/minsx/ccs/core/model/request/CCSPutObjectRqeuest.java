@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import com.minsx.ccs.core.able.CCSPutObjectRequestable;
-import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.model.CCSObjectMetadata;
 
 public class CCSPutObjectRqeuest extends CCSBasePutObjectRequest implements CCSPutObjectRequestable{
 

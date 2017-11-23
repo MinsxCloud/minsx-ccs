@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aliyun.oss.model.Bucket;
+import com.aliyun.oss.model.CompleteMultipartUploadResult;
 import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.OSSObjectSummary;
@@ -16,13 +17,14 @@ import com.aliyun.oss.model.PutObjectResult;
 import com.aliyun.oss.model.UploadPartResult;
 import com.minsx.ccs.core.able.CCSListObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPutObjectRequestable;
-import com.minsx.ccs.core.model.base.CCSBucket;
-import com.minsx.ccs.core.model.base.CCSObject;
-import com.minsx.ccs.core.model.base.CCSObjectList;
-import com.minsx.ccs.core.model.base.CCSObjectMetadata;
-import com.minsx.ccs.core.model.base.CCSObjectSummary;
-import com.minsx.ccs.core.model.base.CCSOwner;
-import com.minsx.ccs.core.model.base.CCSPartETag;
+import com.minsx.ccs.core.model.model.CCSBucket;
+import com.minsx.ccs.core.model.model.CCSObject;
+import com.minsx.ccs.core.model.model.CCSObjectList;
+import com.minsx.ccs.core.model.model.CCSObjectMetadata;
+import com.minsx.ccs.core.model.model.CCSObjectSummary;
+import com.minsx.ccs.core.model.model.CCSOwner;
+import com.minsx.ccs.core.model.model.CCSPartETag;
+import com.minsx.ccs.core.model.response.CCSCompleteMultipartPutResponse;
 import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 import com.minsx.ccs.core.model.response.CCSPutPartResponse;
 import com.minsx.ccs.core.type.UnknownType;
@@ -142,6 +144,15 @@ public class AliyunOSSParseUtil {
 		return new CCSPutPartResponse(uploadPartResult.getPartNumber(),uploadPartResult.getPartSize(),uploadPartResult.getETag());
 	}
 	
+	
+	public static CCSCompleteMultipartPutResponse parseToCCSCompleteMultipartPutResponse(CompleteMultipartUploadResult completeMultipartUploadResult) {
+		CCSCompleteMultipartPutResponse response = new CCSCompleteMultipartPutResponse();
+		response.setBucketName(completeMultipartUploadResult.getBucketName());
+		response.setCcsObjectPath(completeMultipartUploadResult.getKey());
+		response.setETag(completeMultipartUploadResult.getETag());
+		return response;
+	}
+	
 	//---------------------------------------------分隔符----------------------------------------------------------
 	/**
 	 * CCSObjectMetadata 到 OSS ObjectMetadata
@@ -191,5 +202,14 @@ public class AliyunOSSParseUtil {
 		return putObjectRequest;
 	}
 	
+	/**
+	 * CCSPartETag 到 OSS PartETag
+	 */
+	public static PartETag parseToPartETag(CCSPartETag ccsPartETag) {
+		PartETag partETag = new PartETag(ccsPartETag.getPartNumber(), ccsPartETag.geteTag());
+		partETag.setPartSize(ccsPartETag.getPartSize());
+		partETag.setPartCRC(ccsPartETag.getPartCRC());
+		return partETag;
+	}
 	
 }

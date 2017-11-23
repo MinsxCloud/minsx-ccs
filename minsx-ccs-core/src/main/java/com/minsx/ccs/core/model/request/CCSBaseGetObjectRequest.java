@@ -19,7 +19,7 @@ public abstract class CCSBaseGetObjectRequest {
 		this.bucketName = bucketName;
 	}
 
-	public String getCcsPath() {
+	public String getCcsObjectPath() {
 		return ccsPath;
 	}
 

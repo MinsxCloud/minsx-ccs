@@ -3,7 +3,7 @@ package com.minsx.ccs.core.able;
 import java.io.File;
 import java.io.InputStream;
 
-import com.minsx.ccs.core.model.base.CCSObjectMetadata;
+import com.minsx.ccs.core.model.model.CCSObjectMetadata;
 
 public interface CCSPutObjectRequestable {
 	

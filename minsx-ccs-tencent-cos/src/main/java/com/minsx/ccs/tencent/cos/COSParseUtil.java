@@ -3,11 +3,11 @@ package com.minsx.ccs.tencent.cos;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.minsx.ccs.core.model.base.CCSObject;
-import com.minsx.ccs.core.model.base.CCSObjectList;
-import com.minsx.ccs.core.model.base.CCSObjectMetadata;
-import com.minsx.ccs.core.model.base.CCSObjectSummary;
-import com.minsx.ccs.core.model.base.CCSOwner;
+import com.minsx.ccs.core.model.model.CCSObject;
+import com.minsx.ccs.core.model.model.CCSObjectList;
+import com.minsx.ccs.core.model.model.CCSObjectMetadata;
+import com.minsx.ccs.core.model.model.CCSObjectSummary;
+import com.minsx.ccs.core.model.model.CCSOwner;
 import com.qcloud.cos.model.COSObject;
 import com.qcloud.cos.model.COSObjectSummary;
 import com.qcloud.cos.model.ObjectListing;
