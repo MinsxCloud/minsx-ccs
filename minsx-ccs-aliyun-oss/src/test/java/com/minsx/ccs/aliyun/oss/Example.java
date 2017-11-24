@@ -77,7 +77,7 @@ public class Example {
 	
 	@Test
 	public void listObjects() {
-		CCSObjectList ccsObjectList = ccsClient.listObjects("minsx-bucket", "hospital");
+		CCSObjectList ccsObjectList = ccsClient.listObjects("minsx-bucket", "");
 		List<CCSObjectSummary> ccsObjectSummaries =  ccsObjectList.getCcsObjectSummaries();
 		ccsObjectSummaries.forEach(ccsObjectSummary->{
 			System.out.println(ccsObjectSummary.getCcsPath());
@@ -91,7 +91,7 @@ public class Example {
 		CCSObjectList objectListing=null;
 		int sum=0;
 		do {
-		    objectListing = ccsClient.listObjects(new CCSListObjectsRequest("minsx-bucket").withPrefix("oss-log").withMarker(nextMarker).withMaxKeys(maxKeys));
+		    objectListing = ccsClient.listObjects(new CCSListObjectsRequest("minsx-bucket").withPrefix("").withMarker(nextMarker).withMaxKeys(maxKeys));
 		    List<CCSObjectSummary> sums = objectListing.getCcsObjectSummaries();
 		    for (CCSObjectSummary s : sums) {
 		    	System.out.println(s.getCcsPath());
@@ -167,6 +167,20 @@ public class Example {
 		System.out.println(JSON.toJSONString(response));
 	}
 	
+	@Test
+	public void createFolder() {
+		ccsClient.createFolder("minsx-bucket","test");
+	}
+	
+	@Test
+	public void moveObject() {
+		ccsClient.moveObject("minsx-test", "A.docx", "minsx-bucket", "A.docx");
+	}
+	
+	@Test
+	public void getObjectToFile() {
+		ccsClient.getObject("minsx-bucket", "A.docx", new File("E:\\Temp\\A_bck.docx"));
+	}
 	
 
 }

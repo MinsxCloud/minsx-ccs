@@ -1,11 +1,16 @@
 package com.minsx.ccs.aliyun.oss;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
+import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.CompleteMultipartUploadRequest;
 import com.aliyun.oss.model.CompleteMultipartUploadResult;
@@ -24,7 +29,9 @@ import com.minsx.ccs.core.able.CCSListObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPageObjectsRequestable;
 import com.minsx.ccs.core.able.CCSPutObjectRequestable;
 import com.minsx.ccs.core.config.AliyunOSSConfig;
+import com.minsx.ccs.core.exception.CCSServiceException;
 import com.minsx.ccs.core.exception.NativeClientCastException;
+import com.minsx.ccs.core.model.base.CCSObjectOperator;
 import com.minsx.ccs.core.model.model.CCSBucket;
 import com.minsx.ccs.core.model.model.CCSObject;
 import com.minsx.ccs.core.model.model.CCSObjectList;
@@ -43,8 +50,10 @@ public class AliyunOSSImpl implements CCSClient {
 
 	public AliyunOSSImpl(AliyunOSSConfig aliyunOSSConfig) {
 		this.aliyunOSSConfig = aliyunOSSConfig;
+		ClientConfiguration conf = new ClientConfiguration();
+		conf.setSupportCname(aliyunOSSConfig.isSupportCname());
 		this.ossClient = new OSSClient(aliyunOSSConfig.getEndPoint(), aliyunOSSConfig.getAccessKeyId(),
-				aliyunOSSConfig.getAccessKeySecret());
+				aliyunOSSConfig.getAccessKeySecret(),conf);
 	}
 
 	@Override
@@ -89,8 +98,8 @@ public class AliyunOSSImpl implements CCSClient {
 	}
 
 	@Override
-	public CCSPutObjectResponse putObject( String bucketName, String ccsObjectPath,String sourceFilePath) {
-		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, String sourceFilePath) {
+		PutObjectResult result = ossClient.putObject(bucketName, ccsObjectPath, new File(sourceFilePath));
 		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
@@ -118,30 +127,32 @@ public class AliyunOSSImpl implements CCSClient {
 		if (!nativeClientClass.isInstance(OSSClient.class)) {
 			throw new NativeClientCastException(ossClient.getClass(), nativeClientClass);
 		}
-		return (T)ossClient;
+		return (T) ossClient;
 	}
 
 	@Override
 	public CCSObjectList listObjects(CCSPageObjectsRequestable pageable) {
 		String nextMarker = null;
-		CCSObjectList ccsObjectListing=null;
+		CCSObjectList ccsObjectListing = null;
 		ObjectListing objectListing = null;
-		Integer pageIndex=0;
+		Integer pageIndex = 0;
 		do {
-		    objectListing = ossClient.listObjects(new ListObjectsRequest(pageable.getBucketName()).withPrefix(pageable.getPrefix()).withMarker(nextMarker).withMaxKeys(pageable.getPageSize()));
-		    ccsObjectListing= AliyunOSSParseUtil.parseToCCSObjectList(objectListing);
-		    if (pageIndex==pageable.getPageIndex()) {
+			objectListing = ossClient.listObjects(new ListObjectsRequest(pageable.getBucketName())
+					.withPrefix(pageable.getPrefix()).withMarker(nextMarker).withMaxKeys(pageable.getPageSize()));
+			ccsObjectListing = AliyunOSSParseUtil.parseToCCSObjectList(objectListing);
+			if (pageIndex == pageable.getPageIndex()) {
 				break;
 			}
-		    nextMarker = objectListing.getNextMarker();
-		    pageIndex++;
+			nextMarker = objectListing.getNextMarker();
+			pageIndex++;
 		} while (objectListing.isTruncated());
 		return ccsObjectListing;
 	}
 
 	@Override
 	public CCSObjectList listObjects(CCSListObjectsRequestable listObjectsRequestable) {
-		ObjectListing objectListing = ossClient.listObjects(AliyunOSSParseUtil.parseToListObjectsRequest(listObjectsRequestable));
+		ObjectListing objectListing = ossClient
+				.listObjects(AliyunOSSParseUtil.parseToListObjectsRequest(listObjectsRequestable));
 		return AliyunOSSParseUtil.parseToCCSObjectList(objectListing);
 	}
 
@@ -152,49 +163,54 @@ public class AliyunOSSImpl implements CCSClient {
 
 	@Override
 	public List<CCSBucket> listCCSBuckets() {
-		List<CCSBucket> ccsBuckets =ossClient.listBuckets().stream().map(ossBucket->AliyunOSSParseUtil.parseToCCSBucket(ossBucket)).collect(Collectors.toList());
+		List<CCSBucket> ccsBuckets = ossClient.listBuckets().stream()
+				.map(ossBucket -> AliyunOSSParseUtil.parseToCCSBucket(ossBucket)).collect(Collectors.toList());
 		return ccsBuckets;
 	}
 
 	@Override
 	public CCSPutObjectResponse putObject(CCSPutObjectRequestable putObjectRequestable) {
-		PutObjectResult result =	ossClient.putObject(AliyunOSSParseUtil.parseToPutObjectRequest(putObjectRequestable));
+		PutObjectResult result = ossClient.putObject(AliyunOSSParseUtil.parseToPutObjectRequest(putObjectRequestable));
 		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
 	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream) {
-		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, inputStream);
+		PutObjectResult result = ossClient.putObject(bucketName, ccsObjectPath, inputStream);
 		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
 	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile) {
-		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, sourceFile);
+		PutObjectResult result = ossClient.putObject(bucketName, ccsObjectPath, sourceFile);
 		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
 	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, File sourceFile,
 			CCSObjectMetadata ccsObjectMetadata) {
-		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, sourceFile, AliyunOSSParseUtil.parseToObjectMetadata(ccsObjectMetadata));
+		PutObjectResult result = ossClient.putObject(bucketName, ccsObjectPath, sourceFile,
+				AliyunOSSParseUtil.parseToObjectMetadata(ccsObjectMetadata));
 		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
 	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, InputStream inputStream,
 			CCSObjectMetadata ccsObjectMetadata) {
-		PutObjectResult result =	ossClient.putObject(bucketName, ccsObjectPath, inputStream, AliyunOSSParseUtil.parseToObjectMetadata(ccsObjectMetadata));
+		PutObjectResult result = ossClient.putObject(bucketName, ccsObjectPath, inputStream,
+				AliyunOSSParseUtil.parseToObjectMetadata(ccsObjectMetadata));
 		return AliyunOSSParseUtil.parseToCCSPutObjectResponse(result);
 	}
 
 	@Override
 	public CCSInitiateMultipartPutResponse initiateMultipartPut(
 			CCSInitiateMultipartPutRequestable ccsInitiateMultipartPutRequestable) {
-		InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest(ccsInitiateMultipartPutRequestable.getBucketName(),ccsInitiateMultipartPutRequestable.getCcsObjectPath());
+		InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest(
+				ccsInitiateMultipartPutRequestable.getBucketName(),
+				ccsInitiateMultipartPutRequestable.getCcsObjectPath());
 		InitiateMultipartUploadResult result = ossClient.initiateMultipartUpload(request);
 		System.out.println(JSON.toJSONString(result));
-		return new CCSInitiateMultipartPutResponse(result.getBucketName(),result.getKey(),result.getUploadId());
+		return new CCSInitiateMultipartPutResponse(result.getBucketName(), result.getKey(), result.getUploadId());
 	}
 
 	@Override
@@ -213,12 +229,56 @@ public class AliyunOSSImpl implements CCSClient {
 	@Override
 	public CCSCompleteMultipartPutResponse completeMultipartUpload(
 			CCSCompleteMultipartPutRequestable ccsCompleteMultipartPutRequestable) {
-		List<PartETag> partETags = ccsCompleteMultipartPutRequestable.getCCSPartETags().stream().map( ccsPartETag->AliyunOSSParseUtil.parseToPartETag(ccsPartETag)).collect(Collectors.toList());
-		CompleteMultipartUploadRequest completeMultipartUploadRequest = 
-		        new CompleteMultipartUploadRequest(ccsCompleteMultipartPutRequestable.getBucketName(), ccsCompleteMultipartPutRequestable.getCcsObjectPath(), ccsCompleteMultipartPutRequestable.getUploadId(),partETags);
-		CompleteMultipartUploadResult ossResponse =  ossClient.completeMultipartUpload(completeMultipartUploadRequest);
+		List<PartETag> partETags = ccsCompleteMultipartPutRequestable.getCCSPartETags().stream()
+				.map(ccsPartETag -> AliyunOSSParseUtil.parseToPartETag(ccsPartETag)).collect(Collectors.toList());
+		CompleteMultipartUploadRequest completeMultipartUploadRequest = new CompleteMultipartUploadRequest(
+				ccsCompleteMultipartPutRequestable.getBucketName(),
+				ccsCompleteMultipartPutRequestable.getCcsObjectPath(), ccsCompleteMultipartPutRequestable.getUploadId(),
+				partETags);
+		CompleteMultipartUploadResult ossResponse = ossClient.completeMultipartUpload(completeMultipartUploadRequest);
 		return AliyunOSSParseUtil.parseToCCSCompleteMultipartPutResponse(ossResponse);
 	}
 
+	@Override
+	public void createFolder(String bucketName, String folderName) {
+		ossClient.putObject(bucketName, folderName + "/", new ByteArrayInputStream("".getBytes()));
+	}
+
+	@Override
+	public void moveObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,
+			String destinationObjectPath) {
+		copyObject(sourceBucketName, sourceObjectPath, destinationBucketName, destinationObjectPath);
+		try {
+			deleteObject(sourceBucketName, sourceObjectPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+			CCSServiceException deleteSourceException = new CCSServiceException("delete source object error,try rolled back the operation");
+			Map<String, String> additionalDetails = new HashMap<>();
+			additionalDetails.put("sourceBucketName", sourceBucketName);
+			additionalDetails.put("sourceObjectPath", sourceObjectPath);
+			additionalDetails.put("destinationBucketName", destinationBucketName);
+			additionalDetails.put("destinationObjectPath", destinationObjectPath);
+			deleteSourceException.setAdditionalDetails(additionalDetails);
+			deleteObject(destinationBucketName, destinationObjectPath);
+			throw deleteSourceException;
+		}
+	}
+
+	@Override
+	public CCSObjectMetadata getObject(String bucketName, String ccsObjectPath, File localFile) {
+		CCSObject ccsObject = null ;
+		try {
+			ccsObject = getObject(bucketName, ccsObjectPath);
+			CCSObjectOperator.CCSObjectToFile(ccsObject, localFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return ccsObject.getCcsObjectMetadata();
+	}
+
+	@Override
+	public CCSObjectMetadata getObject(String bucketName, String ccsObjectPath, String localFilePath) {
+		return getObject(bucketName,ccsObjectPath,new File(localFilePath));
+	}
 
 }

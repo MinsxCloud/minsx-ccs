@@ -1,5 +1,6 @@
 package com.minsx.ccs.aliyun.oss;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -94,6 +95,15 @@ public class OSSTest {
 		CompleteMultipartUploadRequest completeMultipartUploadRequest = 
 		        new CompleteMultipartUploadRequest("minsx-bucket", "A.docx", uploadId, partETags);
 		ossClient.completeMultipartUpload(completeMultipartUploadRequest);
+	}
+	
+	@Test
+	public void createFolder() {
+		ossClient.putObject("minsx-bucket", "www/", new ByteArrayInputStream("".getBytes()));
+	}
+	
+	@Test
+	public void name() throws Throwable {
 	}
 	
 	

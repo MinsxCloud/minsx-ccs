@@ -184,4 +184,9 @@ public class TencentCOSImpl implements CCSClient {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void createFolder(String bucketName, String folderName) {
+		
+	}
 }

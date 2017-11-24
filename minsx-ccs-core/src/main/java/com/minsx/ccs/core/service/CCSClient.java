@@ -21,7 +21,7 @@ import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 import com.minsx.ccs.core.model.response.CCSPutPartResponse;
 
 /**
- * CCSClient created by web on 2017年11月4日
+ * CCSClient created by Joker on 2017年11月4日
  */
 public interface CCSClient {
 
@@ -33,6 +33,8 @@ public interface CCSClient {
 
 	public List<CCSBucket> listCCSBuckets();
 	
+	public void createFolder(String bucketName, String folderName);
+	
 	public CCSObjectList listObjects(String bucketName, String prefix);
 	
 	public CCSObjectList listObjects(CCSListObjectsRequestable ccslistObjectsRequestable);
@@ -43,12 +45,13 @@ public interface CCSClient {
 	
 	public CCSObject getObject(String bucketName, String ccsObjectPath);
 	
+	public CCSObjectMetadata getObject(String bucketName, String ccsObjectPath,File localFile);
+	
+	public CCSObjectMetadata getObject(String bucketName, String ccsObjectPath,String localFilePath);
+	
 	public CCSObject getObject(CCSGetObjectRequestable objectRequestable);
 
 	public CCSObjectMetadata getObjectMetadata(String bucketName, String ccsObjectPath);
-
-	public void copyObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,
-			String destinationObjectPath);
 
 	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath,String sourceFilePath);
 	
@@ -68,6 +71,10 @@ public interface CCSClient {
 	
 	public CCSCompleteMultipartPutResponse completeMultipartUpload(CCSCompleteMultipartPutRequestable ccsCompleteMultipartPutRequestable);
 	
+	public void copyObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,String destinationObjectPath);
+	
+	public void moveObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,String destinationObjectPath);
+			
 	public void deleteObject(String bucketName, String ccsObjectPath);
 
 	public void shutdown();

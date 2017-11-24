@@ -5,7 +5,20 @@ public class AliyunOSSConfig {
 	private String endPoint;
 	private String accessKeyId;
 	private String accessKeySecret;
+	private boolean isSupportCname;
 
+	public AliyunOSSConfig() {
+		this.isSupportCname=false;
+	}
+	
+	public AliyunOSSConfig(String endPoint, String accessKeyId, String accessKeySecret, boolean isSupportCname) {
+		super();
+		this.endPoint = endPoint;
+		this.accessKeyId = accessKeyId;
+		this.accessKeySecret = accessKeySecret;
+		this.isSupportCname = isSupportCname;
+	}
+	
 	public String getEndPoint() {
 		return endPoint;
 	}
@@ -30,4 +43,11 @@ public class AliyunOSSConfig {
 		this.accessKeySecret = accessKeySecret;
 	}
 
+	public boolean isSupportCname() {
+		return isSupportCname;
+	}
+
+	public void setSupportCname(boolean isSupportCname) {
+		this.isSupportCname = isSupportCname;
+	}
 }

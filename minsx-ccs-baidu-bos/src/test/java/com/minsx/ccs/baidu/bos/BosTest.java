@@ -30,4 +30,8 @@ public class BosTest {
 		bosClient.getObjectMetadata("minsx", "A.docx");
 		bosClient.shutdown();
 	}
+	
+	public void name() {
+	}
+	
 }
