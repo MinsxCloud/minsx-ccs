@@ -6,8 +6,10 @@ import java.util.List;
 import com.baidubce.model.User;
 import com.baidubce.services.bos.model.BosObject;
 import com.baidubce.services.bos.model.BosObjectSummary;
+import com.baidubce.services.bos.model.BucketSummary;
 import com.baidubce.services.bos.model.ListObjectsResponse;
 import com.baidubce.services.bos.model.ObjectMetadata;
+import com.minsx.ccs.core.model.model.CCSBucket;
 import com.minsx.ccs.core.model.model.CCSObject;
 import com.minsx.ccs.core.model.model.CCSObjectList;
 import com.minsx.ccs.core.model.model.CCSObjectMetadata;
@@ -89,5 +91,17 @@ public class BaiduBOSParseUtil {
 		ccsObject.setCcsObjectMetadata(parseToCCSObjectMetadata(bosObject.getObjectMetadata()));
 		return ccsObject;
 	}
-
+	
+	/**
+	 * OSSBucket 到 CCSBucket
+	 */
+	public static CCSBucket parseToCCSBucket(BucketSummary ossBucket) {
+		CCSBucket ccsBucket = new CCSBucket();
+		ccsBucket.setCreationDate(ossBucket.getCreationDate());
+		ccsBucket.setExtranetEndpoint(ossBucket.getLocation());
+		
+		ccsBucket.setLocation(ossBucket.getLocation());
+		ccsBucket.setName(ossBucket.getName());
+		return ccsBucket;
+	}
 }

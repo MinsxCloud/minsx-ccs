@@ -3,6 +3,7 @@ package com.minsx.ccs.baidu.bos;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
@@ -137,7 +138,8 @@ public class BaiduBOSImpl implements CCSClient {
 
 	@Override
 	public List<CCSBucket> listCCSBuckets() {
-		return null;
+		List<CCSBucket> ccsBuckets =bosClient.listBuckets().getBuckets().stream().map(ossBucket->BaiduBOSParseUtil.parseToCCSBucket(ossBucket)).collect(Collectors.toList());
+		return ccsBuckets;
 	}
 
 	@Override
