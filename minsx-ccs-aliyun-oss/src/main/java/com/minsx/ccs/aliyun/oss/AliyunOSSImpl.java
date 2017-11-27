@@ -42,6 +42,7 @@ import com.minsx.ccs.core.model.response.CCSInitiateMultipartPutResponse;
 import com.minsx.ccs.core.model.response.CCSPutObjectResponse;
 import com.minsx.ccs.core.model.response.CCSPutPartResponse;
 import com.minsx.ccs.core.service.CCSClient;
+import com.minsx.ccs.core.util.IOUtil;
 
 public class AliyunOSSImpl implements CCSClient {
 
@@ -252,7 +253,7 @@ public class AliyunOSSImpl implements CCSClient {
 			deleteObject(sourceBucketName, sourceObjectPath);
 		} catch (Exception e) {
 			e.printStackTrace();
-			CCSServiceException deleteSourceException = new CCSServiceException("delete source object error,try rolled back the operation");
+			CCSServiceException deleteSourceException = new CCSServiceException("delete source object error,try roll back the operation");
 			Map<String, String> additionalDetails = new HashMap<>();
 			additionalDetails.put("sourceBucketName", sourceBucketName);
 			additionalDetails.put("sourceObjectPath", sourceObjectPath);
@@ -265,7 +266,7 @@ public class AliyunOSSImpl implements CCSClient {
 	}
 
 	@Override
-	public CCSObjectMetadata getObject(String bucketName, String ccsObjectPath, File localFile) {
+	public CCSObjectMetadata downloadObject(String bucketName, String ccsObjectPath, File localFile) {
 		CCSObject ccsObject = null ;
 		try {
 			ccsObject = getObject(bucketName, ccsObjectPath);
@@ -277,8 +278,9 @@ public class AliyunOSSImpl implements CCSClient {
 	}
 
 	@Override
-	public CCSObjectMetadata getObject(String bucketName, String ccsObjectPath, String localFilePath) {
-		return getObject(bucketName,ccsObjectPath,new File(localFilePath));
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, byte[] bytes) {
+		return putObject(bucketName, ccsObjectPath, IOUtil.bytesToByteArrayInputStream(bytes));
 	}
+
 
 }

@@ -1,6 +1,7 @@
 package com.minsx.ccs.core.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,6 +16,12 @@ import java.io.Writer;
 import java.util.zip.CheckedInputStream;
 
 public class IOUtil {
+	
+	
+	
+	public static ByteArrayInputStream bytesToByteArrayInputStream(byte[] content) {
+		return new ByteArrayInputStream(content);
+	}
 
 	public static void InputStreamToFile(InputStream inputStream, File file) throws IOException {
 		OutputStream os = new FileOutputStream(file);

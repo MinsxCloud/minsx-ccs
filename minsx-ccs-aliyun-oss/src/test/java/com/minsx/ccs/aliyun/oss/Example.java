@@ -18,6 +18,7 @@ import com.minsx.ccs.core.config.AliyunOSSConfig;
 import com.minsx.ccs.core.model.model.CCSBucket;
 import com.minsx.ccs.core.model.model.CCSObject;
 import com.minsx.ccs.core.model.model.CCSObjectList;
+import com.minsx.ccs.core.model.model.CCSObjectMetadata;
 import com.minsx.ccs.core.model.model.CCSObjectSummary;
 import com.minsx.ccs.core.model.model.CCSPartETag;
 import com.minsx.ccs.core.model.request.CCSCompleteMultipartPutRequest;
@@ -70,8 +71,14 @@ public class Example {
 	}
 	
 	@Test
-	public void putObject() {
+	public void putObjectByFilePath() {
 		CCSPutObjectResponse ccsPutObjectResponse = ccsClient.putObject("minsx-bucket", "A.docx","E:\\Temp\\A.docx");
+		System.out.println(JSON.toJSONString(ccsPutObjectResponse));
+	}
+	
+	@Test
+	public void putObjectByFile() {
+		CCSPutObjectResponse ccsPutObjectResponse = ccsClient.putObject("minsx-bucket", "A.docx",new File("E:\\Temp\\A.docx"));
 		System.out.println(JSON.toJSONString(ccsPutObjectResponse));
 	}
 	
@@ -179,7 +186,14 @@ public class Example {
 	
 	@Test
 	public void getObjectToFile() {
-		ccsClient.getObject("minsx-bucket", "A.docx", new File("E:\\Temp\\A_bck.docx"));
+		CCSObjectMetadata objectMetadata = ccsClient.downloadObject("minsx-bucket", "A.docx", new File("E:\\Temp\\A_bck.docx"));
+		System.out.println(JSON.toJSONString(objectMetadata));
+	}
+	
+	@Test
+	public void putObjectByBytes() {
+		CCSPutObjectResponse ccsPutObjectResponse = ccsClient.putObject("minsx-bucket", "A.txt", "this is txt".getBytes());
+		System.out.println(JSON.toJSONString(ccsPutObjectResponse));
 	}
 	
 
