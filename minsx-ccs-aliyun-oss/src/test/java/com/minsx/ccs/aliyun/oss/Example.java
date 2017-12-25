@@ -146,7 +146,7 @@ public class Example {
 		CCSInitiateMultipartPutResponse ccsInitiateMultipartPutResponse = ccsClient
 				.initiateMultipartPut(ccsInitiateMultipartPutRequest);
 		String uploadId = ccsInitiateMultipartPutResponse.getUploadId();
-
+		//此处逻辑还有问题
 		File file = new File("E:\\Temp\\A.docx");
 		for (int i = 0; i < file.length(); i += 100 * 1024) {
 			CCSPutPartRequest ccsPutPartRequest = new CCSPutPartRequest();
@@ -196,5 +196,9 @@ public class Example {
 		System.out.println(JSON.toJSONString(ccsPutObjectResponse));
 	}
 	
+	@Test
+	public void uploadFile() {
+		
+	}
 
 }

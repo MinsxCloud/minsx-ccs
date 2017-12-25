@@ -23,6 +23,7 @@ import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
 import com.aliyun.oss.model.PartETag;
+import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.UploadFileRequest;
 import com.aliyun.oss.model.UploadFileResult;
 import com.aliyun.oss.model.UploadPartRequest;
@@ -104,6 +105,21 @@ public class OSSTest {
 	
 	@Test
 	public void name() throws Throwable {
+		// 设置断点续传请求
+		UploadFileRequest uploadFileRequest = new UploadFileRequest("<yourBucketName>", "<yourKey>");
+		// 指定上传的本地文件
+		uploadFileRequest.setUploadFile("<yourLocalFile>");
+		// 指定上传并发线程数
+		uploadFileRequest.setTaskNum(5);
+		// 指定上传的分片大小
+		uploadFileRequest.setPartSize(1 * 1024 * 1024);
+		// 开启断点续传
+		uploadFileRequest.setEnableCheckpoint(true);
+		// 断点续传上传
+		ossClient.uploadFile(uploadFileRequest);
+		
+		PutObjectRequest request
+		
 	}
 	
 	
