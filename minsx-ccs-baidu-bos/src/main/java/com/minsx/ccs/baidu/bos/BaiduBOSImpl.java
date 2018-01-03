@@ -189,4 +189,29 @@ public class BaiduBOSImpl implements CCSClient {
 		return null;
 	}
 
+	@Override
+	public void createFolder(String bucketName, String folderName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public CCSObjectMetadata downloadObject(String bucketName, String ccsObjectPath, File localFile) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CCSPutObjectResponse putObject(String bucketName, String ccsObjectPath, byte[] bytes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void moveObject(String sourceBucketName, String sourceObjectPath, String destinationBucketName,
+			String destinationObjectPath) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

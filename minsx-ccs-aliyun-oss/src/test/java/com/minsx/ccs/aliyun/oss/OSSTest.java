@@ -23,7 +23,6 @@ import com.aliyun.oss.model.ListObjectsRequest;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
 import com.aliyun.oss.model.PartETag;
-import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.UploadFileRequest;
 import com.aliyun.oss.model.UploadFileResult;
 import com.aliyun.oss.model.UploadPartRequest;
@@ -117,9 +116,6 @@ public class OSSTest {
 		uploadFileRequest.setEnableCheckpoint(true);
 		// 断点续传上传
 		ossClient.uploadFile(uploadFileRequest);
-		
-		PutObjectRequest request
-		
 	}
 	
 	
