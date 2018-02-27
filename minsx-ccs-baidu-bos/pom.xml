@@ -24,6 +24,11 @@
 			<artifactId>minsx-ccs-core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.baidubce</groupId>
+			<artifactId>bce-java-sdk</artifactId>
+			<version>0.10.28</version>
+		</dependency>
 	</dependencies>
 
 	<build>
