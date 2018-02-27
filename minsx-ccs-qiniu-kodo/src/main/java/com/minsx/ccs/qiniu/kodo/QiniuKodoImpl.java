@@ -134,7 +134,7 @@ public class QiniuKodoImpl implements CCSClient {
 
     @Override
     public void createFolder(String bucketName, String folderName) {
-        //七牛云没有文件夹概念
+        System.err.println("七牛云没有文件夹概念");
     }
 
     @Override
@@ -143,12 +143,12 @@ public class QiniuKodoImpl implements CCSClient {
     }
 
     @Override
-    public CCSObjectList listObjects(CCSListObjectsRequestable kustRequest) {
-        return listFiles(kustRequest.getBucketName(),
-                kustRequest.getPrefix(),
-                kustRequest.getMaxKeys(),
+    public CCSObjectList listObjects(CCSListObjectsRequestable listRequest) {
+        return listFiles(listRequest.getBucketName(),
+                listRequest.getPrefix(),
+                listRequest.getMaxKeys(),
                 null,
-                kustRequest.getDelimiter()
+                listRequest.getDelimiter()
         );
     }
 
@@ -296,6 +296,6 @@ public class QiniuKodoImpl implements CCSClient {
             e.printStackTrace();
             fileListing = null;
         }
-        return QiniuKodoParseUtil.parseToCCSObjectList(bucketName, prefix, curMarker, fileListing);
+        return QiniuKodoParseUtil.parseToCCSObjectList(bucketName, prefix,delimiter, curMarker, fileListing);
     }
 }
