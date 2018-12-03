@@ -13,6 +13,8 @@ public class QiniuKodoConfig {
 
     private String bucket;
 
+    private String host;
+
     /**
      * 地区</br>
      * 可取值<code>zone0,huadong,zone1,huabei,zone2,huanan,zoneNa0,beimei</code>
@@ -49,5 +51,13 @@ public class QiniuKodoConfig {
 
     public void setZone(String zone) {
         this.zone = zone;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 }

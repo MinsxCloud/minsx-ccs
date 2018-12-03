@@ -7,9 +7,14 @@ import com.minsx.ccs.core.model.model.CCSObjectList;
 import com.minsx.ccs.core.model.request.CCSListObjectsRequest;
 import com.minsx.ccs.core.model.request.CCSPageObjectsRequest;
 import com.minsx.ccs.core.service.CCSClient;
+import com.qiniu.http.Client;
+import com.qiniu.storage.BucketManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author zcw
@@ -23,11 +28,11 @@ public class KodoTest {
     @Before
     public void initial() {
         QiniuKodoConfig config = new QiniuKodoConfig();
-        config.setAccessKey("todo");
-        config.setSecretKey("todo");
-        config.setBucket("12306-img");
+        config.setAccessKey("FnobzListYUq7J-Knyg08RXssVx51xJCfa-eVe6D");
+        config.setSecretKey("BP8upcETcjZ6SwPlgOsD4INArNEGXHh45mHf0xE9");
+        config.setBucket("static");
         config.setZone("zone0");
-        CCSPageObjectsRequest req = new CCSPageObjectsRequest("12306-img", "", 0, 5);
+        config.setHost("https://static.axboy.cn/");
         ccsClient = new QiniuKodoImpl(config);
     }
 
@@ -50,8 +55,8 @@ public class KodoTest {
 
     @Test
     public void doesBucketExist() {
-        Boolean boo = ccsClient.doesBucketExist("qiniu_ccs_test");
-        System.out.println("result: " + boo);
+        Boolean boo = ccsClient.doesBucketExist("qiniu_ccs_test1");
+        System.out.println("Result: " + boo);
     }
 
     @Test
@@ -68,13 +73,13 @@ public class KodoTest {
 
     @Test
     public void listObjects1() {
-        CCSObjectList list = ccsClient.listObjects("12306-img", "");
+        CCSObjectList list = ccsClient.listObjects("static", "");
         System.out.println("size: " + list.getCcsObjectSummaries().size());
     }
 
     @Test
     public void listObjects2() {
-        CCSListObjectsRequestable listRequest = new CCSListObjectsRequest("12306-img");
+        CCSListObjectsRequestable listRequest = new CCSListObjectsRequest("static");
         listRequest.withMaxKeys(5);
         CCSObjectList list = ccsClient.listObjects(listRequest);
         list.getCcsObjectSummaries().forEach(it -> {
@@ -84,7 +89,7 @@ public class KodoTest {
 
     @Test
     public void listObjects3() {
-        CCSPageObjectsRequestable req = new CCSPageObjectsRequest("12306-img", "", 0, 5);
+        CCSPageObjectsRequestable req = new CCSPageObjectsRequest("static", "", 0, 5);
         CCSObjectList list = ccsClient.listObjects(req);
         list.getCcsObjectSummaries().forEach(it -> {
             System.out.println(it.getCcsPath());
@@ -93,7 +98,38 @@ public class KodoTest {
 
     @Test
     public void doesObjectExist() {
-        Boolean boo = ccsClient.doesObjectExist("12306-img", "1008f218357ab17ccf3d97b60e3481d8");
-        System.out.println("result: " + boo);
+        Boolean boo = ccsClient.doesObjectExist("static", "index.html");
+        System.out.println("Result: " + boo);
+    }
+
+    @Test
+    public void getObject() {
+        ccsClient.getObject("static", "index.html");
+    }
+
+    @Test
+    public void downloadObject() {
+        File file = new File("/Users/zcw/Desktop/index.html");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ccsClient.downloadObject("static", "index.html", file);
+    }
+
+    @Test
+    public void deleteObject() {
+        ccsClient.deleteObject("static", "test.txt");
+    }
+
+    @Test
+    public void shutdown() {
+        ccsClient.shutdown();
+    }
+
+    @Test
+    public void getNativeClient() {
+        ccsClient.getNativeClient(Client.class);
     }
 }

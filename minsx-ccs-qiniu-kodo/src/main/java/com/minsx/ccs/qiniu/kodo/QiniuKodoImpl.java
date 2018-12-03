@@ -2,6 +2,9 @@ package com.minsx.ccs.qiniu.kodo;
 
 import com.minsx.ccs.core.able.*;
 import com.minsx.ccs.core.config.QiniuKodoConfig;
+import com.minsx.ccs.core.exception.CCSServiceException;
+import com.minsx.ccs.core.exception.NativeClientCastException;
+import com.minsx.ccs.core.model.base.CCSObjectOperator;
 import com.minsx.ccs.core.model.model.CCSBucket;
 import com.minsx.ccs.core.model.model.CCSObject;
 import com.minsx.ccs.core.model.model.CCSObjectList;
@@ -15,12 +18,12 @@ import com.minsx.ccs.core.service.CCSClient;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Client;
+import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
+import com.qiniu.storage.model.BatchStatus;
 import com.qiniu.storage.model.FileListing;
 import com.qiniu.util.Auth;
-import com.qiniu.util.StringMap;
-import com.qiniu.util.UrlSafeBase64;
 
 import java.io.*;
 import java.util.*;
@@ -91,30 +94,24 @@ public class QiniuKodoImpl implements CCSClient {
 
     @Override
     public void createBucket(String bucketName) {
-        String codedBucketName = UrlSafeBase64.encodeToString(bucketName);
-        String url = String.format("%s/mkbucketv2/%s", this.qiniuCfg.rsHost(), codedBucketName);
-        StringMap headers = this.auth.authorization(url);
         try {
-            this.client.post(url, null, headers, "application/x-www-form-urlencoded");
+            bucketManager.createBucket(bucketName, qiniuCfg.zone.getRegion());
         } catch (QiniuException e) {
-            e.printStackTrace();
+            throw new CCSServiceException(e.getMessage());
         }
     }
 
     @Override
     public void deleteBucket(String bucketName) {
-        String url = String.format("%s/drop/%s", this.qiniuCfg.rsHost(), bucketName);
-        StringMap headers = this.auth.authorization(url);
         try {
-            this.client.post(url, null, headers, "application/x-www-form-urlencoded");
+            bucketManager.deleteBucket(bucketName);
         } catch (QiniuException e) {
-            e.printStackTrace();
+            throw new CCSServiceException(e.getMessage());
         }
     }
 
     @Override
     public Boolean doesBucketExist(String bucketName) {
-        //TODO 待查找其它方式判断
         return listFiles(bucketName, "", 1, null, null) != null;
     }
 
@@ -124,8 +121,7 @@ public class QiniuKodoImpl implements CCSClient {
         try {
             names = bucketManager.buckets();
         } catch (QiniuException e) {
-            e.printStackTrace();
-            return null;
+            throw new CCSServiceException(e.getMessage());
         }
         return Arrays.stream(names)
                 .map(bucketName -> QiniuKodoParseUtil.parseToCCSBucket(bucketName))
@@ -134,12 +130,12 @@ public class QiniuKodoImpl implements CCSClient {
 
     @Override
     public void createFolder(String bucketName, String folderName) {
-        System.err.println("七牛云没有文件夹概念");
+        throw new CCSServiceException("Could not create folder, no folder notion.");
     }
 
     @Override
     public CCSObjectList listObjects(String bucketName, String prefix) {
-        return listFiles(bucketName, prefix, 0, null, null);
+        return listFiles(bucketName, prefix, 1000, null, null);
     }
 
     @Override
@@ -156,7 +152,6 @@ public class QiniuKodoImpl implements CCSClient {
     public CCSObjectList listObjects(CCSPageObjectsRequestable pageRequest) {
         String nextMarker = null;
         if (pageRequest.getPageIndex() > 0) {
-            //FIXME 从0开始？从1开始？
             CCSObjectList tmp = listFiles(
                     pageRequest.getBucketName(),
                     pageRequest.getPrefix(),
@@ -178,27 +173,49 @@ public class QiniuKodoImpl implements CCSClient {
 
     @Override
     public Boolean doesObjectExist(String bucketName, String ccsObjectPath) {
-        return Optional.of(getObject(bucketName, ccsObjectPath)).isPresent();
+        try {
+            this.getObject(bucketName, ccsObjectPath);
+        } catch (CCSServiceException e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public CCSObject getObject(String bucketName, String ccsObjectPath) {
-        return null;
+        String postfix = auth.privateDownloadUrl(ccsObjectPath);
+        Response response;
+        try {
+            response = client.get(qiniuKodoConfig.getHost() + postfix);
+            CCSObject ccsObject = new CCSObject();
+            ccsObject.setBucketName(bucketName);
+            ccsObject.setCcsPath(ccsObjectPath);
+            ccsObject.setObjectContent(response.bodyStream());
+            return ccsObject;
+        } catch (QiniuException e) {
+            throw new CCSServiceException(e.getMessage());
+        }
     }
 
     @Override
     public CCSObjectMetadata downloadObject(String bucketName, String ccsObjectPath, File localFile) {
-        return null;
+        CCSObject ccsObject = this.getObject(bucketName, ccsObjectPath);
+        try {
+            CCSObjectOperator.CCSObjectToFile(ccsObject, localFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ccsObject.getCcsObjectMetadata();
     }
 
     @Override
     public CCSObject getObject(CCSGetObjectRequestable ccsGetObjectRequestable) {
-        return null;
+        return this.getObject(ccsGetObjectRequestable.getBucketName(), ccsGetObjectRequestable.getCcsObjectPath());
     }
 
     @Override
     public CCSObjectMetadata getObjectMetadata(String bucketName, String ccsObjectPath) {
-        return null;
+        return this.getObject(bucketName, ccsObjectPath).getCcsObjectMetadata();
     }
 
     @Override
@@ -263,23 +280,39 @@ public class QiniuKodoImpl implements CCSClient {
 
     @Override
     public void deleteObject(String bucketName, String ccsObjectPath) {
-
+        BucketManager.BatchOperations batchOperations = new BucketManager.BatchOperations();
+        batchOperations.addDeleteOp(bucketName, ccsObjectPath);
+        try {
+            Response response = bucketManager.batch(batchOperations);
+            BatchStatus[] batchStatusList = response.jsonToObject(BatchStatus[].class);
+            if (batchStatusList.length == 1 && batchStatusList[0].code != 200) {
+                throw new CCSServiceException("delete source object error,try roll back the operation");
+            }
+        } catch (QiniuException e) {
+            throw new CCSServiceException(e.getMessage());
+        }
     }
 
     @Override
     public void shutdown() {
-
+        auth = null;
+        client = null;
+        bucketManager = null;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T getNativeClient(Class<T> nativeClientClazz) {
-        return null;
+        if (nativeClientClazz.isInstance(bucketManager.getClass())) {
+            throw new NativeClientCastException(bucketManager.getClass(), nativeClientClazz);
+        }
+        return (T) bucketManager;
     }
 
-    //-----------------------------私有方法
+    //-----------------------------private method
 
     /**
-     * 获取文件列表
+     * get file list
      *
      * @param bucketName;
      * @param prefix;
@@ -293,9 +326,9 @@ public class QiniuKodoImpl implements CCSClient {
         try {
             fileListing = bucketManager.listFiles(bucketName, prefix, curMarker, limit, delimiter);
         } catch (QiniuException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             fileListing = null;
         }
-        return QiniuKodoParseUtil.parseToCCSObjectList(bucketName, prefix,delimiter, curMarker, fileListing);
+        return QiniuKodoParseUtil.parseToCCSObjectList(bucketName, prefix, delimiter, curMarker, fileListing);
     }
 }
